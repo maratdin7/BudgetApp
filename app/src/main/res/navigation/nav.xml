@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav" app:startDestination="@id/expenseTabsFragment">
+    <fragment android:id="@+id/expenseFragment" android:name="com.example.budget.fragments.expense.ExpenseFragment"
+              android:label="ExpenseFragment"/>
+    <fragment android:id="@+id/localExchangeFragment" android:name="com.example.budget.fragments.expense.LocalExchangeFragment"
+              android:label="LocalExchangeFragment"/>
+    <fragment android:id="@+id/plannedExpenseFragment" android:name="com.example.budget.fragments.expense.PlannedExpenseFragment"
+              android:label="PlannedExpenseFragment"/>
+    <fragment android:id="@+id/historyTabsFragment" android:name="com.example.budget.fragments.tabs.HistoryTabsFragment"
+              android:label="HistoryTabsFragment"/>
+    <fragment android:id="@+id/expenseTabsFragment" android:name="com.example.budget.fragments.tabs.ExpenseTabsFragment"
+              android:label="ExpenseTabsFragment"/>
+    <fragment android:id="@+id/cashAccountFragment"
+              android:name="com.example.budget.fragments.menu.CashAccountFragment" android:label="CashAccountFragment"/>
+    <fragment android:id="@+id/usersFragment" android:name="com.example.budget.fragments.menu.UsersFragment"
+              android:label="UsersFragment"/>
+    <fragment android:id="@+id/categoryFragment" android:name="com.example.budget.fragments.menu.CategoryFragment"
+              android:label="CategoryFragment"/>
+    <fragment android:id="@+id/plannedExpenseFragmentSettings"
+              android:name="com.example.budget.fragments.menu.PlannedExpenseFragment"
+              android:label="PlannedExpenseFragment"/>
+</navigation>

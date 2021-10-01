@@ -1,0 +1,75 @@
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="2dp"
+        app:cardElevation="1dp"
+>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+    >
+
+        <TextView
+                android:id="@+id/senderField"
+                android:maxWidth="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Senderssssssssssssssq"
+                android:textColor="?colorPrimary"
+                android:layout_alignParentTop="true"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+        />
+
+        <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right"
+                android:layout_alignBottom="@id/senderField"
+                android:layout_toEndOf="@id/senderField"
+                app:tint="@color/dark_gray"
+                android:contentDescription="@string/sender_to_receiver_arrow"
+        />
+
+        <TextView
+                android:id="@+id/priceField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123 ₽"
+                android:textColor="?colorPrimary"
+                android:layout_alignBottom="@id/senderField"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+        />
+
+        <TextView
+                android:id="@+id/receiverField"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Receiverqqq"
+                android:ellipsize="end"
+                android:maxLength="100"
+                android:textColor="?colorPrimary"
+                android:layout_alignBottom="@id/senderField"
+                android:layout_toEndOf="@id/arrow"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:singleLine="true"/>
+
+        <TextView
+                android:id="@+id/commentField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/senderField"
+                android:text="Comment ddgdfgsdfg\ngdfgdfs"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+        />
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

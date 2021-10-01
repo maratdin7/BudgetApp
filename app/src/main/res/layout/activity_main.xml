@@ -1,0 +1,63 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+>
+    <data>
+
+    </data>
+    <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_gray"
+        >
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/bottomNavigation">
+
+                <include
+                        android:id="@+id/appBar"
+                        layout="@layout/panel_app_bar"/>
+
+                <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/fragment"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:name="androidx.navigation.fragment.NavHostFragment"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+                        app:defaultNavHost="true"
+                        app:navGraph="@navigation/nav"/>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bottomNavigation"
+                    android:background="@color/background_light_gray"
+                    android:layout_alignParentBottom="true"
+                    app:itemIconTint="@drawable/bottom_navigation_colors"
+                    app:itemTextColor="@drawable/bottom_navigation_colors"
+                    app:menu="@menu/bottom_navigation_menu"
+            />
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigationView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/background_light_gray"
+                app:menu="@menu/drawer_view_menu"
+                app:headerLayout="@layout/header_drawer_user"
+        />
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- Expense Tabs -->
+    <integer-array name="expense_tabs_drawable">
+        <item>@drawable/ic_expense</item>
+        <item>@drawable/ic_income</item>
+        <item>@drawable/ic_local_exchange</item>
+        <item>@drawable/ic_planned_expense</item>
+    </integer-array>
+
+    <string-array name="expense_tabs_title">
+        <item>@string/expense</item>
+        <item>@string/income</item>
+        <item>@string/local_exchange</item>
+        <item>@string/planned</item>
+    </string-array>
+<!-- /Expense Tabs -->
+
+<!-- History Tabs -->
+    <integer-array name="history_tabs_drawable">
+        <item>@drawable/ic_expense</item>
+        <item>@drawable/ic_local_exchange</item>
+    </integer-array>
+
+    <string-array name="history_tabs_title">
+        <item>@string/expense_title</item>
+        <item>@string/local_exchange</item>
+    </string-array>
+<!-- /History Tabs -->
+</resources>

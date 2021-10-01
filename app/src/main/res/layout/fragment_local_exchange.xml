@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="localExchangeViewModel" type="com.example.budget.viewModel.expense.LocalExchangeViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+    >
+
+        <include
+                android:id="@+id/date_price"
+                layout="@layout/panel_expense_date_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:price="@{localExchangeViewModel.priceField}"
+                app:date="@{localExchangeViewModel.dateField}"
+        />
+
+        <include
+                android:id="@+id/senderCashAccountField"
+                layout="@layout/panel_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+
+                app:layout_constraintTop_toBottomOf="@id/date_price"
+
+                app:hint="@{@string/sender_cash_account}"
+                app:error="@{localExchangeViewModel.senderField.error}"
+        />
+
+        <include
+                android:id="@+id/receiverCashAccountField"
+                layout="@layout/panel_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+
+                app:layout_constraintTop_toBottomOf="@id/senderCashAccountField"
+
+                app:hint="@{@string/receiver_cash_account}"
+                app:error="@{localExchangeViewModel.receiverField.error}"
+        />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/commentField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/comment"
+
+                style="@style/TextFieldCustom"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+
+                app:layout_constraintTop_toBottomOf="@id/receiverCashAccountField"
+        >
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textAutoCorrect|textMultiLine"
+                    android:text="@{localExchangeViewModel.commentField.data }"
+                    android:maxLines="3"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/sentExpense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sent_expense"
+                android:layout_marginTop="10dp"
+
+                app:layout_constraintTop_toBottomOf="@id/commentField"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

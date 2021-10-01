@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Budget</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="planned">Регулярные</string>
+    <string name="local_exchange">Обмен</string>
+    <string name="expense">Расходы</string>
+    <string name="income">Доходы</string>
+    <string name="expense_title">Траты</string>
+    <string name="history_title">История</string>
+    <string name="groups_title">Группы</string>
+    <string name="cash_accounts_title">Счета</string>
+    <string name="settings_title">Настройки</string>
+    <string name="price">Цена</string>
+    <string name="date">Дата</string>
+    <string name="desc">DESC</string>
+    <string name="category">Категория</string>
+    <string name="cash_account">Счёт</string>
+    <string name="comment">Комментарий</string>
+    <string name="sent_expense">В бюджет</string>
+    <string name="sender_cash_account">Счёт отправителя</string>
+    <string name="receiver_cash_account">Счёт получателя</string>
+    <string name="add_button">addButton</string>
+    <string name="users_title">Пользователи</string>
+    <string name="createCategory">Создайте категорию</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отменить</string>
+    <string name="request_category_name">Название категории</string>
+    <string name="helper_text_for_adding_user_to_group">
+        Введите почту пользователя, которого вы хотите добавить в группу.\nЕму прийдет приглашение на почту.
+    </string>
+    <string name="user_email">user@email.com</string>
+    <string name="add_user_to_group_request">Добавить пользователя в группу</string>
+    <string name="empty_field">Это поле не должно быть пустым</string>
+    <string name="illegal_email">Некорректный email</string>
+    <string name="day_of_expense">День списания</string>
+    <string name="defaultCashAccount">defaultCashAccount</string>
+    <string name="sort_by">Сортировать по</string>
+    <string name="operation_type">Тип операции</string>
+    <string name="sum_range">Диапазон суммы</string>
+    <string name="price_field_error">Не корректная сумма</string>
+    <string name="date_field_error">Не корректная дата</string>
+    <string name="default_group">defaultGroup</string>
+    <string name="group_loading_error">Ошибка загрузки группы. Попробуйте еще раз</string>
+    <string name="add_group_title">Создайте группу</string>
+    <string name="name_of_group_field">Название группы</string>
+    <string name="error_cash_account">Введите название счёта</string>
+    <string name="error_cash">Введите количество средств</string>
+    <string name="group_name_error">Введите название группы</string>
+    <string name="create_group_error">Группа с таким именем уже существует</string>
+    <string name="default_category">defaultCategory</string>
+    <string name="necessary_field_error">Обязательное поле</string>
+    <string name="sender_to_receiver_arrow">sender_to_receiver_arrow</string>
+
+</resources>
