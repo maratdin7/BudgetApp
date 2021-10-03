@@ -9,6 +9,5 @@ import com.example.budget.viewModel.dropDownField.CategoryViewModel
 open class ExpenseViewModel(
     override val categoryViewModel: CategoryViewModel,
     override val cashAccountViewModel: CashAccountViewModel,
-    override val repository: ExpenseRepository = ExpenseRepository(NetworkService.create("expense/")),
-) : AbstractExpenseViewModel<ExpenseEntity>(categoryViewModel, cashAccountViewModel, repository)
+) : AbstractExpenseViewModel<ExpenseEntity>(categoryViewModel, cashAccountViewModel, ExpenseRepository)
 

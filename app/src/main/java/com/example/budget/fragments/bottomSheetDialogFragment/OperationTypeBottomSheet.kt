@@ -13,16 +13,13 @@ class OperationTypeBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () 
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
         title.text = getString(R.string.operation_type)
 
-        val operationsTypeList = OperationType.toListAll()
-        val checkedId: Int = viewModel.operationType.value.let {
-            if (it != null)
-                operationsTypeList.indexOf(it)
-            else 0
-        }
+        val operationsTypeList = OperationType.values()
+        val operationType = viewModel.operationType
+        val checkedId: Int = findCheckedId(operationType.getOrNull(), operationsTypeList)
 
-        val radioGroup = radioGroup(operationsTypeList, checkedId, title)
+        val radioGroup = radioGroup(operationsTypeList.map { it.type }, checkedId, title)
 
-        radioGroup.settingRadioGroup(relativeLayout) { t -> viewModel.setOperationType(t) }
+        radioGroup.settingRadioGroup(relativeLayout) { t -> operationType.setValue(OperationType.findByType(t)) }
     }
 
     companion object {

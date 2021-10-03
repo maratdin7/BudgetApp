@@ -17,6 +17,8 @@ class FieldWrap<T, E>(private var toStr: (data: T) -> String = { it -> it.toStri
         return this
     }
 
+    fun getOrNull(): T? = data.value
+
     fun clear() {
         _data.value = null
     }

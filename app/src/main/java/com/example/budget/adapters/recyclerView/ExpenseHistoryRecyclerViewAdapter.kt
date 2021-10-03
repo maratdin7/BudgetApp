@@ -1,49 +1,72 @@
 package com.example.budget.adapters.recyclerView
 
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.util.Pair
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
 import com.example.budget.databinding.HeaderExpenseFilterBinding
 import com.example.budget.databinding.ItemExpenseHistoryBinding
+import com.example.budget.dto.ExpenseEntity
 import com.example.budget.fragments.bottomSheetDialogFragment.OperationTypeBottomSheet
 import com.example.budget.fragments.bottomSheetDialogFragment.SortByBottomSheet
 import com.example.budget.fragments.bottomSheetDialogFragment.SumRangeBottomSheet
-import com.example.budget.viewModel.HeaderItemFilterViewModel
+import com.example.budget.repository.FormatterRepository
+import com.example.budget.repository.PersistentRepository.defGroupEntity
+import com.example.budget.viewModel.Event
+import com.example.budget.viewModel.ExpenseHistoryViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ExpenseHistoryRecyclerViewAdapter(
-    private val fragmentActivity: FragmentActivity,
-    val context: Context,
+    private val expenseHistoryViewModel: ExpenseHistoryViewModel,
     private val parentFragmentManager: FragmentManager,
-) :
-    AbstractRecyclerViewWithDateAdapter() {
+) : AbstractRecyclerViewWithDateAdapter() {
 
     var formatter: SimpleDateFormat? = null
+    override var list: MutableList<DataItem> = mutableListOf(DataItem.Header(-1))
 
-    private val viewModel: HeaderItemFilterViewModel by lazy {
-        ViewModelProvider(fragmentActivity).get(HeaderItemFilterViewModel::class.java)
-    }
+    val headerItemFilterViewModel = expenseHistoryViewModel.headerItemFilterViewModel
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderItemViewHolder -> {
+                if (position != 0)
+                    throw IllegalArgumentException()
+
                 val header = getItem(position) as DataItem.Header
                 holder.bind(header).apply {
-                    this.viewModel = this@ExpenseHistoryRecyclerViewAdapter.viewModel
+                    this.viewModel = headerItemFilterViewModel
 
                     createOperationTypeFilter(position, operationType)
                     createSortByFilter(position, sortBy)
                     createSumRangeFilter(position, sumRange)
                     createDateRangeFilter(position, dateRange)
+
+                    sentFilters.setOnClickListener {
+                        defGroupEntity.value?.let { groupEntity ->
+                            expenseHistoryViewModel.getExpenses(groupEntity.id, 0) {
+                                when (it) {
+                                    is Event.Success -> {
+                                        expenseHistoryViewModel.expenses.setValue(it.data!!.toMutableList())
+                                        list.clear()
+                                        list.add(DataItem.Header(-1))
+                                        list.addAll(it.data.map {i ->  ExpenseHistoryItem(i) })
+                                        this@ExpenseHistoryRecyclerViewAdapter.submitList(list)
+                                        notifyDataSetChanged()
+                                        Log.d("expenses", "Success")
+                                    }
+                                    is Event.Error -> Log.d("expenses", "ERROR")
+                                    Event.Loading -> {}
+                                }
+                            }
+                        }
+                    }
                 }
             }
             is DateItemViewHolder -> {
@@ -52,8 +75,36 @@ class ExpenseHistoryRecyclerViewAdapter(
             }
             is ExpenseItemViewHolder -> {
                 val historyItem = getItem(position) as ExpenseHistoryItem
-                holder.bind(historyItem)
+                holder.bind(historyItem).apply {
+                    expenseEntity = historyItem.expenseEntity
+                    priceFormatter = FormatterRepository.priceFormatter.apply {
+                        maximumFractionDigits = 1
+                    }
+                    if (list.size > 1) {
+                        val prev = list[position - 1]
+                        if (prev is ExpenseHistoryItem) {
+                            val prevDate = prev.expenseEntity.date
+                            val curDate = historyItem.expenseEntity.date
+
+                            if (prevDate.after(curDate))
+                                return
+                        }
+                    }
+                    dateFormatter = FormatterRepository.dayWithFullMonth
+                }
             }
+        }
+    }
+
+    override fun getItemCount(): Int =
+        list.size
+
+    override fun getItemViewType(position: Int): Int {
+        Log.d("expenses", "$position $list\n $itemCount")
+        return when (getItem(position)) {
+            is DataItem.Header -> HEADER_VIEW_TYPE_HEADER
+            is DataItem.DateItem -> ITEM_VIEW_TYPE_DATE_HEADER
+            is DataItem.Item -> ITEM_VIEW_TYPE_HISTORY_ITEM
         }
     }
 
@@ -67,7 +118,8 @@ class ExpenseHistoryRecyclerViewAdapter(
         val now = Calendar.getInstance().timeInMillis
         var curRange = Pair(now, now)
 
-        viewModel.dateRange.value?.let {
+        val dateRange = headerItemFilterViewModel.dateRange
+        dateRange.data.value?.let {
             curRange = Pair(it.first.time, it.second.time)
         }
 
@@ -83,27 +135,28 @@ class ExpenseHistoryRecyclerViewAdapter(
         picker.addOnPositiveButtonClickListener {
             val start = Date(it.first!!)
             val end = Date(it.second!!)
-            viewModel.setDateRange(start, end)
+            dateRange.setValue(start to end)
             notifyItemChanged(position)
         }
     }
 
     private fun createSumRangeFilter(position: Int, sumRange: Chip) {
-        val sumRangeBottomSheet = SumRangeBottomSheet(viewModel) { notifyItemChanged(position) }
+        val sumRangeBottomSheet = SumRangeBottomSheet(headerItemFilterViewModel) { notifyItemChanged(position) }
         sumRange.setOnClickListener {
             sumRangeBottomSheet.show(parentFragmentManager, SumRangeBottomSheet.TAG)
         }
     }
 
     private fun createSortByFilter(position: Int, sortBy: Chip) {
-        val sortByBottomSheet = SortByBottomSheet(viewModel) { notifyItemChanged(position) }
+        val sortByBottomSheet = SortByBottomSheet(headerItemFilterViewModel) { notifyItemChanged(position) }
         sortBy.setOnClickListener {
             sortByBottomSheet.show(parentFragmentManager, SortByBottomSheet.TAG)
         }
     }
 
     private fun createOperationTypeFilter(position: Int, operationType: Chip) {
-        val operationTypeBottomSheet = OperationTypeBottomSheet(viewModel) { notifyItemChanged(position) }
+        val operationTypeBottomSheet =
+            OperationTypeBottomSheet(headerItemFilterViewModel) { notifyItemChanged(position) }
         operationType.setOnClickListener {
             operationTypeBottomSheet.show(parentFragmentManager, OperationTypeBottomSheet.TAG)
         }
@@ -126,9 +179,7 @@ class ExpenseHistoryRecyclerViewAdapter(
             HeaderExpenseFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false),
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(header: DataItem.Header): HeaderExpenseFilterBinding {
-            return binding
-        }
+        fun bind(header: DataItem.Header): HeaderExpenseFilterBinding = binding
     }
 
     class ExpenseItemViewHolder(
@@ -137,24 +188,20 @@ class ExpenseHistoryRecyclerViewAdapter(
             ItemExpenseHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false),
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(expenseHistoryItem: ExpenseHistoryItem) =
-            binding.apply {
-                with(expenseHistoryItem) {
-                    categoryField.text = category
-                    emailField.text = email
-                    priceField.text = "$price ₽"
-                    commentField.text = comment
-                }
-            }
+        fun bind(expenseHistoryItem: ExpenseHistoryItem) = binding
     }
+
+    init {
+        expenseHistoryViewModel.expenses.data.observeForever { expenses ->
+//            list.addAll(expenses.map { ExpenseHistoryItem(it) })
+//            this.submitList(list)
+//            notifyDataSetChanged()
+        }
+    }
+
 }
 
 data class ExpenseHistoryItem(
-    override val id: Int,
-    val category: String = "Category",
-    val email: String = "user@email.com",
-    val price: Double = 100.0,
-    val comment: String = "hjqwkehjk/nfdfsd/nrewrew/tfdfsd",
-
-    ) : DataItem.Item(id)
+    val expenseEntity: ExpenseEntity,
+) : DataItem.Item(expenseEntity.id + 1)
 

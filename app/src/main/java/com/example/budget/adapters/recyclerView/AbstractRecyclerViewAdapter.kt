@@ -12,7 +12,7 @@ import java.util.*
 abstract class AbstractRecyclerViewAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(HistoryDiffCallback()) {
 
-    private var list: List<DataItem> = listOf()
+    open var list: MutableList<DataItem> = mutableListOf()
 
     protected val ITEM_VIEW_TYPE_DATE_HEADER = 0
     protected val ITEM_VIEW_TYPE_HISTORY_ITEM = 1
@@ -34,7 +34,7 @@ abstract class AbstractRecyclerViewAdapter :
     }
 
     fun updateList(l: List<DataItem>) {
-        list = l
+        list = l.toMutableList()
         submitList(list)
     }
 }

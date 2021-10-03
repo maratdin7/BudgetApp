@@ -1,17 +1,20 @@
 package com.example.budget.repository.api
 
+import com.example.budget.client.NetworkService
 import com.example.budget.client.api.ExpenseApi
-import com.example.budget.client.api.LocalExchangeApi
 import com.example.budget.dto.ExpenseEntity
-import com.example.budget.dto.LocalExchangeEntity
 import com.example.budget.repository.FormatterRepository.sqlDateFormatter
+import com.example.budget.viewModel.Filters
 import retrofit2.Response
+import java.util.*
 
 interface IExpenseRepository<T> {
     suspend fun create(entity: T): Response<T>
 }
 
-class ExpenseRepository(private val expenseApi: ExpenseApi) : IExpenseRepository<ExpenseEntity> {
+object ExpenseRepository : IExpenseRepository<ExpenseEntity> {
+
+    private val expenseApi: ExpenseApi = NetworkService.create("expense/")
 
     override suspend fun create(
         entity: ExpenseEntity,
@@ -25,18 +28,22 @@ class ExpenseRepository(private val expenseApi: ExpenseApi) : IExpenseRepository
         )
     }
 
-}
+    suspend fun getExpenses(groupId: Int, page: Int, filters: Filters): Response<List<ExpenseEntity>> {
+        val dateFormatter = { date: Date? -> date?.let { sqlDateFormatter.format(it) } }
 
-class LocalExchangeRepository(private val localExchangeApi: LocalExchangeApi): IExpenseRepository<LocalExchangeEntity> {
-
-    override suspend fun create(
-        entity: LocalExchangeEntity,
-    ): Response<LocalExchangeEntity> = entity.run {
-        return localExchangeApi.createLocalExchange(
-            senderId = senderId,
-            receiverId = receiverId,
-            sent = sent,
-            date = sqlDateFormatter.format(date)
-        )
+        filters.run {
+            return expenseApi.getExpenses(
+                groupId = groupId,
+                page = page,
+                operationType = type,
+                categoryId = categoryId,
+                afterDate = dateFormatter(dateRange?.first),
+                beforeDate = dateFormatter(dateRange?.second),
+                from = sumRange?.first?.toDouble(),
+                to = sumRange?.second?.toDouble(),
+                direction = direction
+            )
+        }
     }
+
 }

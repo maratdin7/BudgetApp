@@ -1,52 +1,45 @@
 package com.example.budget.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.budget.adapters.recyclerView.OperationType
+import com.example.budget.fragments.bottomSheetDialogFragment.Direction
 import com.example.budget.repository.FormatterRepository.dayWithMonth
-import java.text.SimpleDateFormat
+import com.example.budget.viewModel.wrap.FieldWrap
 import java.util.*
 
 class HeaderItemFilterViewModel : ViewModel() {
-    private val _operationType: MutableLiveData<String?> = MutableLiveData()
-    val operationType: LiveData<String?> = _operationType
+    val operationType: FieldWrap<OperationType, String> = FieldWrap()
 
-    fun setOperationType(type: String) {
-        _operationType.value = type
-    }
+    val sortBy: FieldWrap<Direction, String> = FieldWrap()
 
-    private val _sortBy: MutableLiveData<String?> = MutableLiveData()
-    val sortBy: LiveData<String?> = _sortBy
+    val dateRange: FieldWrap<Pair<Date, Date>, String> = FieldWrap()
 
-    fun setSortBy(type: String) {
-        _sortBy.value = type
-    }
+    fun dateRangeToString(): String? =
+        dateRange.data.value?.run {
+            val format = { d: Date -> dayWithMonth.format(d) }
+            val (s, e) = this.map(format)
+            return "$s - $e"
+        }
 
-    private val _dateRange: MutableLiveData<Pair<Date, Date>?> = MutableLiveData()
-    val dateRange: LiveData<Pair<Date, Date>?> = _dateRange
+    val sumRange: FieldWrap<Pair<Float, Float>, String> = FieldWrap()
 
-    fun dateRangeToString(): String? {
-        val dateRange = this.dateRange.value ?: return null
-        val s = dayWithMonth.format(dateRange.first)
-        val e = dayWithMonth.format(dateRange.second)
-        return "$s - $e"
-    }
+    fun sumRangeToString(): String? =
+        sumRange.data.value?.run {
+            val (f, s) = this.map{ it.toInt() }
+            return "$f .. $s"
+        }
 
-    fun setDateRange(start: Date, end: Date) {
-        _dateRange.value = start to end
-    }
+    val filters: Filters = Filters()
 
-    private val _sumRange: MutableLiveData<Pair<Float, Float>?> = MutableLiveData()
-    val sumRange: LiveData<Pair<Float, Float>?> = _sumRange
+    private fun <T, K> Pair<T, T>.map(transform: (T) -> K): Pair<K, K> = transform(first) to transform(second)
 
-    fun setSumRange(from: Float, to: Float) {
-        _sumRange.value = from to to
-    }
-
-    fun sumRangeToString(): String? {
-        val sumRange = this.sumRange.value ?: return null
-        val f = sumRange.first.toInt()
-        val s = sumRange.second.toInt()
-        return "$f..$s"
-    }
 }
+
+
+data class Filters(
+    var type: OperationType? = null,
+    var categoryId: Int? = null,
+    var dateRange: Pair<Date?, Date?>? = null to null,
+    var sumRange: Pair<Float?, Float?>? = null to null,
+    var direction: Direction? = null,
+)

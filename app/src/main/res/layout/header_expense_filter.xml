@@ -1,4 +1,4 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
 
         <variable name="viewModel" type="com.example.budget.viewModel.HeaderItemFilterViewModel"/>
@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Action"
-                android:text="@{viewModel.sortBy ?? @string/sort_by}"
+                android:text="@{viewModel.sortBy.data.dir ?? @string/sort_by}"
         />
 
         <com.google.android.material.chip.Chip
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Action"
-                android:text="@{viewModel.operationType ?? @string/operation_type}"/>
+                android:text="@{viewModel.operationType.data.type ?? @string/operation_type}"/>
 
         <com.google.android.material.chip.Chip
                 android:id="@+id/sumRange"
@@ -43,7 +43,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.dateRangeToString() ?? @string/date}"
+        />
 
+        <com.google.android.material.chip.Chip
+                android:id="@+id/sentFilters"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIcon="@drawable/ic_search"
+                app:chipBackgroundColor="?colorPrimaryDark"
+                app:chipIconTint="@color/white"
         />
 
     </com.google.android.material.chip.ChipGroup>

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import com.example.budget.R
+import com.example.budget.repository.FormatterRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputEditText
@@ -88,7 +89,7 @@ object DialogBuilder {
             stepSize = 100f
             values = listOf(sumRange.first.toFloat(), sumRange.last.toFloat())
             setLabelFormatter {
-                NumberFormat.getCurrencyInstance(Locale("ru", "RU")).apply {
+                FormatterRepository.priceFormatter.apply {
                     maximumFractionDigits = 0
                 }
                     .format(it.toDouble())

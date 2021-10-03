@@ -17,11 +17,12 @@ object ViewModelProviderFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(vm: Class<T>): T {
         return when {
-            vm.checkType<T, HeaderItemFilterViewModel>() -> HeaderItemFilterViewModel() as T
+            vm.checkType<T, ExpenseHistoryViewModel>() -> ExpenseHistoryViewModel(HeaderItemFilterViewModel()) as T
             vm.checkType<T, AuthViewModel>() -> AuthViewModel() as T
             vm.checkType<T, ExpenseViewModel>() -> ExpenseViewModel(categoryViewModel, cashAccountViewModel) as T
             vm.checkType<T, IncomeViewModel>() -> IncomeViewModel(categoryViewModel, cashAccountViewModel) as T
-            vm.checkType<T, PlannedExpenseViewModel>() -> PlannedExpenseViewModel(categoryViewModel, cashAccountViewModel) as T
+            vm.checkType<T, PlannedExpenseViewModel>() -> PlannedExpenseViewModel(categoryViewModel,
+                cashAccountViewModel) as T
             vm.checkType<T, LocalExchangeViewModel>() -> LocalExchangeViewModel(cashAccountViewModel) as T
             else -> throw IllegalArgumentException("ViewModel Not Found")
         }

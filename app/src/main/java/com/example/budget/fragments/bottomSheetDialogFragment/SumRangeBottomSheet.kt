@@ -16,7 +16,8 @@ class SumRangeBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Un
 
         title.text = getString(R.string.sum_range)
 
-        val prevSumRange = viewModel.sumRange.value
+        val sumRange = viewModel.sumRange
+        val prevSumRange = sumRange.data.value
         val end =
             if (prevSumRange != null && prevSumRange.second > valueTo)
                 bigValueTo
@@ -41,7 +42,7 @@ class SumRangeBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Un
                 }
             }
 
-            viewModel.setSumRange(from, to)
+            sumRange.setValue(from to to)
             notify()
         })
     }

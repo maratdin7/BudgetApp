@@ -13,12 +13,13 @@ class SortByBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Unit
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
         title.text = getString(R.string.sort_by)
 
-        val dirTypes = Direction.toList()
-        val checkedId: Int = findCheckedId(viewModel.sortBy.value, dirTypes)
+        val dirTypes = Direction.values()
+        val sortBy = viewModel.sortBy
+        val checkedId: Int = findCheckedId(sortBy.data.value, dirTypes)
 
-        val radioGroup: RadioGroup = radioGroup(dirTypes, checkedId, title)
+        val radioGroup: RadioGroup = radioGroup(dirTypes.map { it.dir }, checkedId, title)
 
-        radioGroup.settingRadioGroup(relativeLayout) { t -> viewModel.setSortBy(t) }
+        radioGroup.settingRadioGroup(relativeLayout) { t -> sortBy.setValue(Direction.findByDir(t)) }
     }
 
     companion object {
@@ -33,5 +34,14 @@ enum class Direction(val dir: String) {
 
     companion object {
         fun toList() = listOf(BY_DATE.dir, ASC.dir, DESC.dir)
+
+        fun findByDir(dir: String): Direction {
+            return when (dir) {
+                ASC.dir -> ASC
+                DESC.dir -> DESC
+                else -> BY_DATE
+            }
+        }
     }
+
 }

@@ -18,9 +18,9 @@ abstract class AbstractRadioGroupBottomSheet(viewModel: HeaderItemFilterViewMode
         layoutParams = defLayoutParams(title)
     }
 
-    protected fun findCheckedId(it: String?, dirTypes: List<String>): Int {
-        if (it != null) {
-            val checkedId = dirTypes.indexOf(it)
+    protected fun <T> findCheckedId(el: T?, array: Array<T>): Int {
+        el?.run {
+            val checkedId = array.indexOf(el)
             if (checkedId >= 0) return checkedId
         }
         return 0

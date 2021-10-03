@@ -16,7 +16,7 @@
     <string name="desc">DESC</string>
     <string name="category">Категория</string>
     <string name="cash_account">Счёт</string>
-    <string name="comment">Комментарий</string>
+    <string name="comment">Комментарий:</string>
     <string name="sent_expense">В бюджет</string>
     <string name="sender_cash_account">Счёт отправителя</string>
     <string name="receiver_cash_account">Счёт получателя</string>

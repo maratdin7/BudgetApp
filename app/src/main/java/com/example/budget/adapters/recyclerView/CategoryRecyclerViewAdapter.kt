@@ -56,5 +56,11 @@ enum class OperationType(val type: String) {
 
         fun toListAll(): List<String> = listOf(ALL.type, EXPENSE.type, INCOME.type)
 
+        fun findByType(type: String): OperationType =
+            when (type) {
+                EXPENSE.type -> EXPENSE
+                INCOME.type -> INCOME
+                else -> ALL
+            }
     }
 }

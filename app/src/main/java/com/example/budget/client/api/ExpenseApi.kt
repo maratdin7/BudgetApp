@@ -30,7 +30,7 @@ interface ExpenseApi {
         @Query("from") from: Double? = null,
         @Query("to") to: Double? = null,
         @Query("direction") direction: Direction? = null,
-    ): Response<List<ExpensesAns>>
+    ): Response<List<ExpenseEntity>>
 
     @GET("getSum")
     suspend fun getSum(
@@ -43,4 +43,5 @@ interface ExpenseApi {
         @Query("to") to: Double? = null,
     ): Response<Double>
 }
+
 
