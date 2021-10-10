@@ -7,8 +7,8 @@ import android.widget.TextView
 import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.HeaderItemFilterViewModel
 
-abstract class AbstractRadioGroupBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Unit) :
-    AbstractBottomSheet(viewModel, notify) {
+abstract class AbstractRadioGroupBottomSheet(viewModel: HeaderItemFilterViewModel) :
+    AbstractBottomSheet(viewModel) {
 
     protected fun DialogBuilder.radioGroup(
         list: List<String>,
@@ -32,7 +32,6 @@ abstract class AbstractRadioGroupBottomSheet(viewModel: HeaderItemFilterViewMode
         setOnCheckedChangeListener { r, pos ->
             val checked = r.findViewById<RadioButton>(pos)
             setText(checked.text as String)
-            this@AbstractRadioGroupBottomSheet.notify()
         }
     }
 }

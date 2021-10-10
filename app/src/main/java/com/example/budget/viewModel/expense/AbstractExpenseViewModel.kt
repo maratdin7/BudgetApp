@@ -58,7 +58,7 @@ abstract class AbstractDatePriceViewModel<T>(
         return null
     }
 
-    val commentField = FieldWrap<String, String>()
+    val commentField = MutableFieldWrap<String, String>()
 
     open fun clearFields() {
         priceField.clear()

@@ -12,7 +12,7 @@ import com.google.gson.Gson
 
 object PersistentRepository {
 
-    val token: String = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJhdGRpbjcrMUBnbWFpbC5jb20iLCJpYXQiOjE2MzMyMzE4NzgsImV4cCI6MTYzMzIzNTQ3OH0.aAFyXY-PWvHfQqmrzL2hLO9sTo5owy1eaM6DreqBZ61WrPuV772MUTfeafAmGjGqLwi8LTJ1XVKtmPK5X9oeLA"
+    val token: String = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJhdGRpbjcrMUBnbWFpbC5jb20iLCJpYXQiOjE2MzM4MjkyNzMsImV4cCI6MTYzMzgzMjg3M30.JUPZK9LyZVIOIQl8El4bNQWFxsmvM6c8-T4eQ514t_f6UGXPLlsO2NXqzNVogNUWgXvEQNY9j2ZcchxYSZ9-nA"
 
     fun loadDefaultCashAccountId(context: Context): Int? {
         val pref = PreferenceManager.getDefaultSharedPreferences(context)

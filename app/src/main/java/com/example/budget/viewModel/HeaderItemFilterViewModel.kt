@@ -8,9 +8,9 @@ import com.example.budget.viewModel.wrap.FieldWrap
 import java.util.*
 
 class HeaderItemFilterViewModel : ViewModel() {
-    val operationType: FieldWrap<OperationType, String> = FieldWrap()
+    val operationType: FieldWrap<OperationType?, String> = FieldWrap()
 
-    val sortBy: FieldWrap<Direction, String> = FieldWrap()
+    val sortBy: FieldWrap<Direction?, String> = FieldWrap()
 
     val dateRange: FieldWrap<Pair<Date, Date>, String> = FieldWrap()
 
@@ -18,7 +18,7 @@ class HeaderItemFilterViewModel : ViewModel() {
         dateRange.data.value?.run {
             val format = { d: Date -> dayWithMonth.format(d) }
             val (s, e) = this.map(format)
-            return "$s - $e"
+            return "$s – $e"
         }
 
     val sumRange: FieldWrap<Pair<Float, Float>, String> = FieldWrap()
@@ -29,12 +29,9 @@ class HeaderItemFilterViewModel : ViewModel() {
             return "$f .. $s"
         }
 
-    val filters: Filters = Filters()
-
     private fun <T, K> Pair<T, T>.map(transform: (T) -> K): Pair<K, K> = transform(first) to transform(second)
 
 }
-
 
 data class Filters(
     var type: OperationType? = null,

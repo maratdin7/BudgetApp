@@ -3,7 +3,6 @@ package com.example.budget.adapters.recyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.util.Pair
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +17,7 @@ import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.PersistentRepository.defGroupEntity
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.ExpenseHistoryViewModel
+import com.example.budget.viewModel.wrap.FieldWrap
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
@@ -30,10 +30,16 @@ class ExpenseHistoryRecyclerViewAdapter(
 
     var formatter: SimpleDateFormat? = null
     override var list: MutableList<DataItem> = mutableListOf(DataItem.Header(-1))
+    private var page = 0
+    private var downloadPage = -1
+    private val PERCENT_FOR_DOWNLOAD_NEW_PAGE = 0.8
 
     val headerItemFilterViewModel = expenseHistoryViewModel.headerItemFilterViewModel
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (position == downloadPage)
+            getExpenses()
+
         when (holder) {
             is HeaderItemViewHolder -> {
                 if (position != 0)
@@ -43,29 +49,14 @@ class ExpenseHistoryRecyclerViewAdapter(
                 holder.bind(header).apply {
                     this.viewModel = headerItemFilterViewModel
 
-                    createOperationTypeFilter(position, operationType)
-                    createSortByFilter(position, sortBy)
-                    createSumRangeFilter(position, sumRange)
-                    createDateRangeFilter(position, dateRange)
+                    createOperationTypeFilter(operationType)
+                    createSortByFilter(sortBy)
+                    createSumRangeFilter(sumRange)
+                    createDateRangeFilter(dateRange)
 
                     sentFilters.setOnClickListener {
-                        defGroupEntity.value?.let { groupEntity ->
-                            expenseHistoryViewModel.getExpenses(groupEntity.id, 0) {
-                                when (it) {
-                                    is Event.Success -> {
-                                        expenseHistoryViewModel.expenses.setValue(it.data!!.toMutableList())
-                                        list.clear()
-                                        list.add(DataItem.Header(-1))
-                                        list.addAll(it.data.map {i ->  ExpenseHistoryItem(i) })
-                                        this@ExpenseHistoryRecyclerViewAdapter.submitList(list)
-                                        notifyDataSetChanged()
-                                        Log.d("expenses", "Success")
-                                    }
-                                    is Event.Error -> Log.d("expenses", "ERROR")
-                                    Event.Loading -> {}
-                                }
-                            }
-                        }
+                        list.clearList()
+                        getExpenses()
                     }
                 }
             }
@@ -80,14 +71,17 @@ class ExpenseHistoryRecyclerViewAdapter(
                     priceFormatter = FormatterRepository.priceFormatter.apply {
                         maximumFractionDigits = 1
                     }
+
                     if (list.size > 1) {
                         val prev = list[position - 1]
                         if (prev is ExpenseHistoryItem) {
                             val prevDate = prev.expenseEntity.date
                             val curDate = historyItem.expenseEntity.date
 
-                            if (prevDate.after(curDate))
+                            if (prevDate.compareTo(curDate) == 0) {
+                                dateFormatter = null
                                 return
+                            }
                         }
                     }
                     dateFormatter = FormatterRepository.dayWithFullMonth
@@ -96,25 +90,60 @@ class ExpenseHistoryRecyclerViewAdapter(
         }
     }
 
+    private fun getExpenses() {
+        val groupId = defGroupEntity.value?.id ?: return
+        expenseHistoryViewModel.getExpenses(groupId, page) {
+            when (it) {
+                is Event.Success -> {
+                    downloadPage = if (it.data.isNullOrEmpty()) -1
+                    else {
+                        page++
+                        list.updateList(it.data)
+                        Log.d("expenses", "Success")
+                        list.size - 1
+                    }
+                }
+                is Event.Error -> Log.d("expenses", "ERROR")
+                Event.Loading -> {
+                }
+            }
+        }
+
+    }
+
+    private fun MutableList<DataItem>.updateList(data: List<ExpenseEntity>) {
+        val prevSize = this.size
+        addAll(data.map { i -> ExpenseHistoryItem(i) })
+        this@ExpenseHistoryRecyclerViewAdapter.submitList(this)
+        notifyItemRangeInserted(prevSize, data.size - 1)
+    }
+
+    private fun MutableList<DataItem>.clearList() {
+        page = 0
+        clear()
+        this.add(DataItem.Header(-1))
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int =
         list.size
 
-    override fun getItemViewType(position: Int): Int {
-        Log.d("expenses", "$position $list\n $itemCount")
-        return when (getItem(position)) {
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
             is DataItem.Header -> HEADER_VIEW_TYPE_HEADER
             is DataItem.DateItem -> ITEM_VIEW_TYPE_DATE_HEADER
             is DataItem.Item -> ITEM_VIEW_TYPE_HISTORY_ITEM
         }
-    }
 
-    private fun createDateRangeFilter(position: Int, dateRange: Chip) {
+    private fun createDateRangeFilter(dateRange: Chip) {
         dateRange.setOnClickListener {
-            createDatePickerRange(position)
+            createDatePickerRange()
         }
+
+        dateRange.clearOnCloseIconClickListener(headerItemFilterViewModel.dateRange)
     }
 
-    private fun createDatePickerRange(position: Int) {
+    private fun createDatePickerRange() {
         val now = Calendar.getInstance().timeInMillis
         var curRange = Pair(now, now)
 
@@ -136,30 +165,39 @@ class ExpenseHistoryRecyclerViewAdapter(
             val start = Date(it.first!!)
             val end = Date(it.second!!)
             dateRange.setValue(start to end)
-            notifyItemChanged(position)
         }
     }
 
-    private fun createSumRangeFilter(position: Int, sumRange: Chip) {
-        val sumRangeBottomSheet = SumRangeBottomSheet(headerItemFilterViewModel) { notifyItemChanged(position) }
+    private fun createSumRangeFilter(sumRange: Chip) {
+        val sumRangeBottomSheet = SumRangeBottomSheet(headerItemFilterViewModel)
         sumRange.setOnClickListener {
             sumRangeBottomSheet.show(parentFragmentManager, SumRangeBottomSheet.TAG)
         }
+
+        sumRange.clearOnCloseIconClickListener(headerItemFilterViewModel.sumRange)
     }
 
-    private fun createSortByFilter(position: Int, sortBy: Chip) {
-        val sortByBottomSheet = SortByBottomSheet(headerItemFilterViewModel) { notifyItemChanged(position) }
+    private fun createSortByFilter(sortBy: Chip) {
+        val sortByBottomSheet = SortByBottomSheet(headerItemFilterViewModel)
         sortBy.setOnClickListener {
             sortByBottomSheet.show(parentFragmentManager, SortByBottomSheet.TAG)
         }
+
+        sortBy.clearOnCloseIconClickListener(headerItemFilterViewModel.sortBy)
     }
 
-    private fun createOperationTypeFilter(position: Int, operationType: Chip) {
+    private fun createOperationTypeFilter(operationType: Chip) {
         val operationTypeBottomSheet =
-            OperationTypeBottomSheet(headerItemFilterViewModel) { notifyItemChanged(position) }
+            OperationTypeBottomSheet(headerItemFilterViewModel)
         operationType.setOnClickListener {
             operationTypeBottomSheet.show(parentFragmentManager, OperationTypeBottomSheet.TAG)
         }
+
+        operationType.clearOnCloseIconClickListener(headerItemFilterViewModel.operationType)
+    }
+
+    private fun Chip.clearOnCloseIconClickListener(fieldWrap: FieldWrap<out Any?, out Any?>) {
+        setOnCloseIconClickListener { fieldWrap.clear() }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -192,12 +230,23 @@ class ExpenseHistoryRecyclerViewAdapter(
     }
 
     init {
-        expenseHistoryViewModel.expenses.data.observeForever { expenses ->
-//            list.addAll(expenses.map { ExpenseHistoryItem(it) })
-//            this.submitList(list)
-//            notifyDataSetChanged()
+        defGroupEntity.observeForever {
+            list.clearList()
+            getExpenses()
+        }
+
+        val applyObservable = { f: FieldWrap<out Any?, out Any?> -> f.data.observeForever { notifyItemChanged(0) } }
+        with(headerItemFilterViewModel) {
+            applyObservable(sortBy)
+            applyObservable(operationType)
+            applyObservable(dateRange)
+            applyObservable(sumRange)
         }
     }
+
+}
+
+class Filters() {
 
 }
 

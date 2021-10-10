@@ -13,7 +13,7 @@ import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.HeaderItemFilterViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class AbstractBottomSheet(val viewModel: HeaderItemFilterViewModel, val notify: () -> Unit) :
+abstract class AbstractBottomSheet(val viewModel: HeaderItemFilterViewModel) :
     BottomSheetDialogFragment() {
 
     protected abstract fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView)

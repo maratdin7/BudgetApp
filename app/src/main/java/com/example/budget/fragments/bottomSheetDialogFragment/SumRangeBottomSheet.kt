@@ -7,14 +7,12 @@ import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.HeaderItemFilterViewModel
 import com.google.android.material.slider.RangeSlider
 
-class SumRangeBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Unit) :
-    AbstractRadioGroupBottomSheet(viewModel, notify) {
+class SumRangeBottomSheet(viewModel: HeaderItemFilterViewModel) :
+    AbstractRadioGroupBottomSheet(viewModel) {
 
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
         val bigValueTo = 500000f
         val valueTo = 10000f
-
-        title.text = getString(R.string.sum_range)
 
         val sumRange = viewModel.sumRange
         val prevSumRange = sumRange.data.value
@@ -43,7 +41,6 @@ class SumRangeBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Un
             }
 
             sumRange.setValue(from to to)
-            notify()
         })
     }
 

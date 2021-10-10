@@ -3,16 +3,13 @@ package com.example.budget.fragments.bottomSheetDialogFragment
 import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.example.budget.R
 import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.HeaderItemFilterViewModel
 
-class SortByBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Unit) :
-    AbstractRadioGroupBottomSheet(viewModel, notify) {
+class SortByBottomSheet(viewModel: HeaderItemFilterViewModel) :
+    AbstractRadioGroupBottomSheet(viewModel) {
 
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
-        title.text = getString(R.string.sort_by)
-
         val dirTypes = Direction.values()
         val sortBy = viewModel.sortBy
         val checkedId: Int = findCheckedId(sortBy.data.value, dirTypes)

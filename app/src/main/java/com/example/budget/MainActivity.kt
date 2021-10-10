@@ -29,6 +29,7 @@ import com.example.budget.dto.GroupEntity
 import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.GroupViewModel
+import com.google.android.material.chip.Chip
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 
@@ -223,9 +224,9 @@ class MainActivity : AppCompatActivity() {
         val spinnerAdapter =
             ArrayAdapter<String>(this, R.layout.item_spinner, mutableListOf())
         groupViewModel.groupsList.observe(this) {
-                println(groupViewModel.groupsList.value)
-                spinnerAdapter.clear()
-                spinnerAdapter.addAll(groupViewModel.groupsList.value!!.map { it.name })
+            println(groupViewModel.groupsList.value)
+            spinnerAdapter.clear()
+            spinnerAdapter.addAll(groupViewModel.groupsList.value!!.map { it.name })
         }
 
         getAllUserGroups()
@@ -244,4 +245,9 @@ class MainActivity : AppCompatActivity() {
 @BindingAdapter("errorText")
 fun setErrorMessage(view: TextInputLayout, errorMessage: String?) {
     view.error = errorMessage
+}
+
+@BindingAdapter("onCloseIconListener")
+fun setOnCloseIconClickListener(chip: Chip, callback: (c: Chip) -> Unit) {
+    chip.setOnCloseIconClickListener { callback(it as Chip) }
 }

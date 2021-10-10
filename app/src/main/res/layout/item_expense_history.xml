@@ -2,6 +2,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
 >
     <data>
+        <import type="android.view.View"/>
         <variable name="expenseEntity" type="com.example.budget.dto.ExpenseEntity"/>
         <variable name="dateFormatter" type="java.text.SimpleDateFormat"/>
         <variable name="priceFormatter" type="java.text.NumberFormat"/>
@@ -17,13 +18,14 @@
                 android:id="@+id/dateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{ dateFormatter.format(expenseEntity.date), default=`23 Мая`}"
-                android:enabled="@{ dateFormatter != null }"
+                android:text="@{ dateFormatter.format(expenseEntity.date)}"
+                android:visibility="@{ dateFormatter != null ? View.VISIBLE : View.GONE }"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:paddingVertical="5dp"
                 android:paddingHorizontal="20dp"
                 android:textColor="?colorPrimaryDark"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
         />
 
         <com.google.android.material.card.MaterialCardView
@@ -32,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="2dp"
-                app:cardElevation="1dp"
                 android:layout_below="@id/dateText"
+                app:cardElevation="1dp"
         >
 
             <RelativeLayout

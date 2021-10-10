@@ -9,8 +9,6 @@ class ExpenseHistoryViewModel(
     val headerItemFilterViewModel: HeaderItemFilterViewModel,
 ) : MainViewModel() {
     private val repository = ExpenseRepository
-    val expenses = FieldWrap<MutableList<ExpenseEntity>, String>()
-    val page: FieldWrap<Int, String> = FieldWrap()
 
     fun getExpenses(groupId: Int, p: Int = 0, callback: (Event<List<ExpenseEntity>?>) -> Unit) {
         requestWithCallback({
@@ -18,12 +16,7 @@ class ExpenseHistoryViewModel(
                 groupId,
                 p,
                 getFilters())
-        }) {
-            if (it is Event.Success)
-                page.setValue(p + 1)
-
-            callback(it)
-        }
+        }) { callback(it) }
     }
 
     private fun getFilters(): Filters = headerItemFilterViewModel.run {
@@ -33,18 +26,5 @@ class ExpenseHistoryViewModel(
             sumRange = sumRange.getOrNull(),
             direction = sortBy.getOrNull()
         )
-    }
-
-    init {
-        defGroupEntity.observeForever { groupEntity ->
-            getExpenses(groupEntity.id) {
-                when (it) {
-                    is Event.Success -> expenses.setValue(it.data!!.toMutableList())
-                    is Event.Error -> expenses.setError("Error")
-                    Event.Loading -> {
-                    }
-                }
-            }
-        }
     }
 }

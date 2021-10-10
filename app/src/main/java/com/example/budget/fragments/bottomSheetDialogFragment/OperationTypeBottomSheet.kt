@@ -7,12 +7,10 @@ import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.HeaderItemFilterViewModel
 
-class OperationTypeBottomSheet(viewModel: HeaderItemFilterViewModel, notify: () -> Unit) :
-    AbstractRadioGroupBottomSheet(viewModel, notify) {
+class OperationTypeBottomSheet(viewModel: HeaderItemFilterViewModel) :
+    AbstractRadioGroupBottomSheet(viewModel) {
 
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
-        title.text = getString(R.string.operation_type)
-
         val operationsTypeList = OperationType.values()
         val operationType = viewModel.operationType
         val checkedId: Int = findCheckedId(operationType.getOrNull(), operationsTypeList)
