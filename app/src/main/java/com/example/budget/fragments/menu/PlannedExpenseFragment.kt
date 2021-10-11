@@ -8,14 +8,15 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.budget.adapters.recyclerView.DataItem
-import com.example.budget.adapters.recyclerView.DateEntity
-import com.example.budget.adapters.recyclerView.ExpenseHistoryItem
-import com.example.budget.adapters.recyclerView.ExpenseHistoryRecyclerViewAdapter
+import com.example.budget.R
+import com.example.budget.adapters.recyclerView.withFilters.ExpenseHistoryFilterableRecyclerViewAdapter
+import com.example.budget.adapters.recyclerView.withFilters.ExpenseHistoryRecyclerViewAdapter
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.databinding.PanelFullExpenseBinding
+import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.ExpenseHistoryViewModel
+import com.example.budget.viewModel.PlannedExpenseHistoryViewModel
 import com.example.budget.viewModel.ViewModelProviderFactory
 import java.text.SimpleDateFormat
 import java.util.*
@@ -60,44 +61,9 @@ class PlannedExpenseFragment : AbstractMenuFragment() {
     }
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(ExpenseHistoryViewModel::class.java)
-        val adapter = ExpenseHistoryRecyclerViewAdapter(viewModel, parentFragmentManager)
-        adapter.formatter = SimpleDateFormat("d день месяца", Locale.getDefault())
-//        adapter.updateList(adapter.toDataItem(expenses))
+        val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(PlannedExpenseHistoryViewModel::class.java)
+        val formatter = FormatterRepository.onlyDayFormatter(getString(R.string.plannedExpenseDatePost))
+        val adapter = ExpenseHistoryRecyclerViewAdapter(viewModel, formatter)
         return adapter
     }
-
-//    private fun tmp(): MutableList<PlannedExpenseEntity> {
-//        val expenses = mutableListOf<PlannedExpenseEntity>()
-//        val formatter = SimpleDateFormat("yyyy-MM-dd")
-//        var startDate = formatter.parse("2021-12-01")
-//        for (i in 1..30) {
-//
-//            when (i) {
-//                10 -> startDate = formatter.parse("2021-11-22")
-//                20 -> startDate = formatter.parse("2021-10-21")
-//
-//            }
-//            expenses.add(PlannedExpenseEntity(category = "Category $i", price = i.toDouble(), day = i))
-//        }
-//        return expenses
-//    }
 }
-
-//data class PlannedExpenseEntity(
-//    val category: String = "Category",
-//    val email: String = "user@email.com",
-//    val price: Double = 100.0,
-//    val day: Int,
-//    val comment: String = "hjqwkehjk/nfdfsd/nrewrew/tfdfsd",
-//) : DateEntity(Calendar.getInstance().run {
-//    set(Calendar.DAY_OF_MONTH, day)
-//    this.time
-//}) {
-//
-//    override fun toItem(id: Int): DataItem = ExpenseHistoryItem(
-//        id = id,
-//        category = category,
-//        price = price,
-//    )
-//}

@@ -11,7 +11,7 @@ import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.dropDownField.CategoryViewModel
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.MainViewModel
-import com.example.budget.viewModel.wrap.FieldWrap
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 import com.example.budget.viewModel.wrap.MutableFieldWrap
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -78,9 +78,9 @@ abstract class AbstractExpenseViewModel<T>(
         clearDropDownFields()
     }
 
-    var cashAccountField = FieldWrap<CashAccountEntity?, String>()
+    var cashAccountField = FieldWrapWithError<CashAccountEntity?, String>()
 
-    var categoryField = FieldWrap<CategoryEntity?, String>()
+    var categoryField = FieldWrapWithError<CategoryEntity?, String>()
 
     private fun clearDropDownFields() {
         cashAccountField.clear()
@@ -97,8 +97,8 @@ class LocalExchangeViewModel(
     override val repository: LocalExchangeRepository = LocalExchangeRepository(NetworkService.create("localExchange/")),
 ) : AbstractDatePriceViewModel<LocalExchangeEntity>(repository) {
 
-    var senderField = FieldWrap<CashAccountEntity?, String>()
-    var receiverField = FieldWrap<CashAccountEntity?, String>()
+    var senderField = FieldWrapWithError<CashAccountEntity?, String>()
+    var receiverField = FieldWrapWithError<CashAccountEntity?, String>()
 
     override fun clearFields() {
         super.clearFields()

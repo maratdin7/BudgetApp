@@ -6,7 +6,7 @@ import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.client.NetworkService
 import com.example.budget.dto.CategoryEntity
 import com.example.budget.repository.api.withDefault.CategoryRepository
-import com.example.budget.viewModel.wrap.FieldWrap
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 import retrofit2.Response
 
 class CategoryViewModel(
@@ -22,8 +22,8 @@ class CategoryViewModel(
     override suspend fun getListEntities(groupId: Int): Response<List<CategoryEntity>> =
         repository.getAllCategories(groupId)
 
-    private val incomeCategories = FieldWrap<List<CategoryEntity>, String>()
-    private val expenseCategories = FieldWrap<List<CategoryEntity>, String>()
+    private val incomeCategories = FieldWrapWithError<List<CategoryEntity>, String>()
+    private val expenseCategories = FieldWrapWithError<List<CategoryEntity>, String>()
 
     fun getListEntities(type: OperationType): LiveData<List<CategoryEntity>> = when (type) {
         OperationType.ALL -> listEntities.data

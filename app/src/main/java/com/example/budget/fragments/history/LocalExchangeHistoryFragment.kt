@@ -2,7 +2,6 @@ package com.example.budget.fragments.history
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.adapters.recyclerView.DataItem
-import com.example.budget.adapters.recyclerView.DateEntity
 import com.example.budget.adapters.recyclerView.LocalExchangeHistoryItem
 import com.example.budget.adapters.recyclerView.LocalExpenseHistoryRecyclerViewAdapter
 import java.text.SimpleDateFormat
@@ -13,7 +12,7 @@ class LocalExchangeHistoryFragment : AbstractHistoryFragment() {
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val adapter = LocalExpenseHistoryRecyclerViewAdapter()
         val localExchanges = tmp()
-        adapter.updateList(adapter.toDataItem(localExchanges))
+//        adapter.updateList(adapter.toDataItem(localExchanges))
         return adapter
     }
 
@@ -42,11 +41,11 @@ data class LocalExchangeEntity(
     val senderCashAccount: String = "SenderCashAccount",
     val receiverCashAccount: String = "ReceiverCashAccount",
     val price: Double,
-    override val date: Date,
+    val date: Date,
     val comment: String = "qqwweee\ndfsfds",
-) : DateEntity(date) {
+) : DataItem.Item(1) {
 
-    override fun toItem(id: Int): DataItem = LocalExchangeHistoryItem(
+    fun toItem(id: Int): DataItem = LocalExchangeHistoryItem(
         id = id,
         senderCashAccount = senderCashAccount,
         receiverCashAccount = receiverCashAccount,

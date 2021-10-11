@@ -6,14 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.databinding.ItemLocalExchangeHistoryBinding
 
 class LocalExpenseHistoryRecyclerViewAdapter  :
-    AbstractRecyclerViewWithDateAdapter() {
+    AbstractRecyclerViewAdapter() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is DateItemViewHolder -> {
-                val headerItem = getItem(position) as DataItem.DateItem
-                holder.bind(headerItem)
-            }
             is LocalExchangeItemViewHolder -> {
                 val localExchangeHistoryItem = getItem(position) as LocalExchangeHistoryItem
                 holder.bind(localExchangeHistoryItem)
@@ -23,7 +19,6 @@ class LocalExpenseHistoryRecyclerViewAdapter  :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_DATE_HEADER -> DateItemViewHolder(parent)
             ITEM_VIEW_TYPE_HISTORY_ITEM -> LocalExchangeItemViewHolder(parent)
             else -> throw ClassCastException("Unknown viewType $viewType")
         }

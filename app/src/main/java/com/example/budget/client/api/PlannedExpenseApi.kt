@@ -16,7 +16,7 @@ interface PlannedExpenseApi {
         @Query("comment") comment: String? = null,
     ): Response<PlannedExpenseEntity>
 
-    @GET("/all")
+    @GET("all")
     suspend fun getAllPlannedExpenses(
         @Query("groupId") groupId: Int,
     ): Response<List<PlannedExpenseEntity>>

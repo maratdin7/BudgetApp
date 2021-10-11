@@ -9,10 +9,6 @@ class UserRecyclerViewAdapter : AbstractRecyclerViewAdapter() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is AbstractRecyclerViewWithDateAdapter.DateItemViewHolder -> {
-                val headerItem = getItem(position) as DataItem.DateItem
-                holder.bind(headerItem)
-            }
             is UserItemViewHolder -> {
                 val userItem = getItem(position) as UserItem
                 holder.bind(userItem)

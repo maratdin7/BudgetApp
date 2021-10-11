@@ -89,9 +89,7 @@ object DialogBuilder {
             stepSize = 100f
             values = listOf(sumRange.first.toFloat(), sumRange.last.toFloat())
             setLabelFormatter {
-                FormatterRepository.priceFormatter.apply {
-                    maximumFractionDigits = 0
-                }
+                FormatterRepository.priceFormatter(0)
                     .format(it.toDouble())
             }
 

@@ -8,10 +8,6 @@ import com.example.budget.databinding.ItemCategoryBinding
 class CategoryRecyclerViewAdapter : AbstractRecyclerViewAdapter() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is AbstractRecyclerViewWithDateAdapter.DateItemViewHolder -> {
-                val headerItem = getItem(position) as DataItem.DateItem
-                holder.bind(headerItem)
-            }
             is CategoryItemViewHolder -> {
                 val categoryItem = getItem(position) as CategoryItem
                 holder.bind(categoryItem)

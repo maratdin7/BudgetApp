@@ -79,7 +79,7 @@ class CategoryFragment : AbstractMenuFragment() {
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val adapter = CategoryRecyclerViewAdapter()
         val users = tmp()
-        adapter.updateList(
+        adapter.updateList1(
             users.mapIndexed { i, c ->
                 CategoryItem(
                     id = i,

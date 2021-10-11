@@ -4,15 +4,16 @@ import androidx.lifecycle.ViewModel
 import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.fragments.bottomSheetDialogFragment.Direction
 import com.example.budget.repository.FormatterRepository.dayWithMonth
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 import com.example.budget.viewModel.wrap.FieldWrap
 import java.util.*
 
-class HeaderItemFilterViewModel : ViewModel() {
-    val operationType: FieldWrap<OperationType?, String> = FieldWrap()
+class ExpenseFiltersViewModel : ViewModel() {
+    val operationType: FieldWrap<OperationType?> = FieldWrapWithError()
 
-    val sortBy: FieldWrap<Direction?, String> = FieldWrap()
+    val sortBy: FieldWrap<Direction?> = FieldWrapWithError()
 
-    val dateRange: FieldWrap<Pair<Date, Date>, String> = FieldWrap()
+    val dateRange: FieldWrap<Pair<Date, Date>> = FieldWrapWithError()
 
     fun dateRangeToString(): String? =
         dateRange.data.value?.run {
@@ -21,7 +22,7 @@ class HeaderItemFilterViewModel : ViewModel() {
             return "$s – $e"
         }
 
-    val sumRange: FieldWrap<Pair<Float, Float>, String> = FieldWrap()
+    val sumRange: FieldWrap<Pair<Float, Float>> = FieldWrapWithError()
 
     fun sumRangeToString(): String? =
         sumRange.data.value?.run {
@@ -31,6 +32,13 @@ class HeaderItemFilterViewModel : ViewModel() {
 
     private fun <T, K> Pair<T, T>.map(transform: (T) -> K): Pair<K, K> = transform(first) to transform(second)
 
+
+    fun getFilters(): Filters = Filters(
+            type = operationType.getOrNull(),
+            dateRange = dateRange.getOrNull(),
+            sumRange = sumRange.getOrNull(),
+            direction = sortBy.getOrNull()
+        )
 }
 
 data class Filters(

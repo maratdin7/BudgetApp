@@ -11,7 +11,7 @@ import com.example.budget.repository.view.DropDownField
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.dropDownField.AbstractDropDownFieldViewModel
 import com.example.budget.viewModel.expense.AbstractDatePriceViewModel
-import com.example.budget.viewModel.wrap.FieldWrap
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -69,7 +69,7 @@ abstract class AbstractDatePriceFragment<T, V : AbstractDatePriceViewModel<T>> :
         listEntities: LiveData<List<K>>,
         dropDownFieldViewModel: AbstractDropDownFieldViewModel<K>,
         dropDownField: TextInputLayout,
-        liveDataWrap: FieldWrap<K?, String>,
+        liveDataWrap: FieldWrapWithError<K?, String>,
         entityToString: (K) -> String,
     ) = listEntities.observe(this@AbstractDatePriceFragment) { list ->
         DropDownField(requireContext(), list, dropDownField).apply {

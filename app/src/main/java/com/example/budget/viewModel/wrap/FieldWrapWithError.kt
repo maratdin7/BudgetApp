@@ -3,7 +3,9 @@ package com.example.budget.viewModel.wrap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class FieldWrap<T, E>(private var toStr: (data: T) -> String = { it -> it.toString() }) : ErrorWrap<E?>() {
+typealias FieldWrap<T> = FieldWrapWithError<T, String>
+
+class FieldWrapWithError<T, E>(private var toStr: (data: T) -> String = { it -> it.toString() }) : ErrorWrap<E?>() {
     private val _data: MutableLiveData<T> = MutableLiveData()
     val data: LiveData<T> = _data
 

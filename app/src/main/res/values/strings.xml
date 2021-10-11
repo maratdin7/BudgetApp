@@ -52,5 +52,6 @@
     <string name="necessary_field_error">Обязательное поле</string>
     <string name="sender_to_receiver_arrow">sender_to_receiver_arrow</string>
     <string name="search">Поиск</string>
+    <string name="plannedExpenseDatePost">день месяца</string>
 
 </resources>

@@ -10,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.budget.R
 import com.example.budget.databinding.FragmentOperationTypeBinding
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.HeaderItemFilterViewModel
+import com.example.budget.viewModel.ExpenseFiltersViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class AbstractBottomSheet(val viewModel: HeaderItemFilterViewModel) :
+abstract class AbstractBottomSheet :
     BottomSheetDialogFragment() {
 
     protected abstract fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView)

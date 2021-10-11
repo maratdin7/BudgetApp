@@ -2,6 +2,7 @@ package com.example.budget.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.budget.viewModel.ViewModelProviderFactory.checkType
 import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.dropDownField.CategoryViewModel
 import com.example.budget.viewModel.expense.ExpenseViewModel
@@ -17,7 +18,8 @@ object ViewModelProviderFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(vm: Class<T>): T {
         return when {
-            vm.checkType<T, ExpenseHistoryViewModel>() -> ExpenseHistoryViewModel(HeaderItemFilterViewModel()) as T
+            vm.checkType<T, ExpenseHistoryViewModel>() -> ExpenseHistoryViewModel(ExpenseFiltersViewModel()) as T
+            vm.checkType<T, PlannedExpenseHistoryViewModel>() -> PlannedExpenseHistoryViewModel() as T
             vm.checkType<T, AuthViewModel>() -> AuthViewModel() as T
             vm.checkType<T, ExpenseViewModel>() -> ExpenseViewModel(categoryViewModel, cashAccountViewModel) as T
             vm.checkType<T, IncomeViewModel>() -> IncomeViewModel(categoryViewModel, cashAccountViewModel) as T

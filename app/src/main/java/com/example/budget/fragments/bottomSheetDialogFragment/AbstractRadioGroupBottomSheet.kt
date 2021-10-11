@@ -5,10 +5,10 @@ import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.HeaderItemFilterViewModel
+import com.example.budget.viewModel.ExpenseFiltersViewModel
 
-abstract class AbstractRadioGroupBottomSheet(viewModel: HeaderItemFilterViewModel) :
-    AbstractBottomSheet(viewModel) {
+abstract class AbstractRadioGroupBottomSheet :
+    AbstractBottomSheet() {
 
     protected fun DialogBuilder.radioGroup(
         list: List<String>,

@@ -74,7 +74,7 @@ class UsersFragment : AbstractMenuFragment() {
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val adapter = UserRecyclerViewAdapter()
         val users = tmp()
-        adapter.updateList(
+        adapter.updateList1(
             users.mapIndexed { i, u ->
                 UserItem(
                     id = i,

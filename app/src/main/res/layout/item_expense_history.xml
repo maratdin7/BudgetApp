@@ -3,7 +3,7 @@
 >
     <data>
         <import type="android.view.View"/>
-        <variable name="expenseEntity" type="com.example.budget.dto.ExpenseEntity"/>
+        <variable name="expenseEntity" type="com.example.budget.dto.IExpenseEntity"/>
         <variable name="dateFormatter" type="java.text.SimpleDateFormat"/>
         <variable name="priceFormatter" type="java.text.NumberFormat"/>
     </data>

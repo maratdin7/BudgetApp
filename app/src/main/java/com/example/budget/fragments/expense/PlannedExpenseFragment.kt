@@ -42,12 +42,14 @@ class PlannedExpenseFragment : AbstractExpenseFragment<PlannedExpenseEntity>() {
         categoryEntity: CategoryEntity,
         cashAccountEntity: CashAccountEntity,
         comment: String?,
-    ): PlannedExpenseEntity = PlannedExpenseEntity(
-        price = price,
-        day = onlyDayFormatter.format(date).toInt(),
-        categoryId = categoryEntity.id,
-        cashAccountId = cashAccountEntity.id,
-        comment = comment
-    )
+    ): PlannedExpenseEntity {
+        return PlannedExpenseEntity(
+            price = price,
+            day = onlyDayFormatter.format(date).toInt(),
+            categoryId = categoryEntity.id,
+            cashAccountId = cashAccountEntity.id,
+            comment = comment
+        )
+    }
 
 }

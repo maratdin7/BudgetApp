@@ -2,19 +2,17 @@ package com.example.budget.fragments.bottomSheetDialogFragment
 
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.example.budget.R
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.HeaderItemFilterViewModel
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 import com.google.android.material.slider.RangeSlider
 
-class SumRangeBottomSheet(viewModel: HeaderItemFilterViewModel) :
-    AbstractRadioGroupBottomSheet(viewModel) {
+class SumRangeBottomSheet(private val sumRange: FieldWrapWithError<Pair<Float, Float>, String>) :
+    AbstractRadioGroupBottomSheet() {
 
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
         val bigValueTo = 500000f
         val valueTo = 10000f
 
-        val sumRange = viewModel.sumRange
         val prevSumRange = sumRange.data.value
         val end =
             if (prevSumRange != null && prevSumRange.second > valueTo)

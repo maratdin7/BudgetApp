@@ -1,7 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.example.budget.fragments.bottomSheetDialogFragment.Direction"/>
-        <variable name="viewModel" type="com.example.budget.viewModel.HeaderItemFilterViewModel"/>
+        <variable name="viewModel" type="com.example.budget.viewModel.ExpenseFiltersViewModel"/>
 
     </data>
     <com.google.android.material.chip.ChipGroup
@@ -18,7 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Action"
-                app:closeIconEnabled="true"
+                app:closeIconEnabled="@{viewModel.operationType.data.type != null}"
                 android:text="@{viewModel.operationType.data.type ?? @string/operation_type}"/>
 
         <com.google.android.material.chip.Chip
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Action"
-                app:closeIconEnabled="true"
+                app:closeIconEnabled="@{viewModel.sumRangeToString() != null}"
                 android:text="@{viewModel.sumRangeToString() ?? @string/sum_range}"
         />
 
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Action"
-                app:closeIconEnabled="true"
+                app:closeIconEnabled="@{viewModel.sortBy.data.dir != null}"
                 android:text="@{viewModel.sortBy.data.dir ?? @string/sort_by}"
         />
 
@@ -44,7 +44,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:closeIconEnabled="true"
+                app:closeIconEnabled="@{viewModel.dateRangeToString() != null}"
                 android:text="@{viewModel.dateRangeToString() ?? @string/date}"
         />
 

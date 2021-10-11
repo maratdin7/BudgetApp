@@ -1,30 +1,38 @@
 package com.example.budget.viewModel
 
 import com.example.budget.dto.ExpenseEntity
-import com.example.budget.repository.PersistentRepository.defGroupEntity
+import com.example.budget.dto.PlannedExpenseEntity
 import com.example.budget.repository.api.ExpenseRepository
-import com.example.budget.viewModel.wrap.FieldWrap
+import com.example.budget.repository.api.PlannedExpenseRepository
+import com.example.budget.viewModel.expense.ExpenseViewModel
+
+interface IRecyclerViewModel<T> {
+    fun getEntities(groupId:Int, page: Int = 0, callback: (Event<List<T>?>) -> Unit)
+}
 
 class ExpenseHistoryViewModel(
-    val headerItemFilterViewModel: HeaderItemFilterViewModel,
-) : MainViewModel() {
+    val expenseFiltersViewModel: ExpenseFiltersViewModel,
+) : MainViewModel(), IRecyclerViewModel<ExpenseEntity> {
     private val repository = ExpenseRepository
 
-    fun getExpenses(groupId: Int, p: Int = 0, callback: (Event<List<ExpenseEntity>?>) -> Unit) {
+    override fun getEntities(groupId: Int, page: Int, callback: (Event<List<ExpenseEntity>?>) -> Unit) {
         requestWithCallback({
             repository.getExpenses(
                 groupId,
-                p,
-                getFilters())
+                page,
+                expenseFiltersViewModel.getFilters())
         }) { callback(it) }
     }
+}
 
-    private fun getFilters(): Filters = headerItemFilterViewModel.run {
-        Filters(
-            type = operationType.getOrNull(),
-            dateRange = dateRange.getOrNull(),
-            sumRange = sumRange.getOrNull(),
-            direction = sortBy.getOrNull()
-        )
+class PlannedExpenseHistoryViewModel : MainViewModel(), IRecyclerViewModel<PlannedExpenseEntity> {
+    private val repository = PlannedExpenseRepository
+
+    fun getPlannedExpenses(groupId: Int, callback: (Event<List<PlannedExpenseEntity>?>) -> Unit) {
+        requestWithCallback({ repository.getPlannedExpenses(groupId) }) { callback(it) }
+    }
+
+    override fun getEntities(groupId: Int, page: Int, callback: (Event<List<PlannedExpenseEntity>?>) -> Unit) {
+        requestWithCallback({repository.getPlannedExpenses(groupId)}) { callback(it)}
     }
 }

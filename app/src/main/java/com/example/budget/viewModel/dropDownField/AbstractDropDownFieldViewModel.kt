@@ -8,16 +8,16 @@ import com.example.budget.repository.PersistentRepository
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.MainViewModel
 import com.example.budget.viewModel.wrap.ErrorWrap
-import com.example.budget.viewModel.wrap.FieldWrap
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 import retrofit2.Response
 
 abstract class AbstractDropDownFieldViewModel<T>(
     protected open val repository: DefEntityRepository<T>,
 ) : MainViewModel() {
 
-    protected val listEntities = FieldWrap<List<T>, String>()
+    protected val listEntities = FieldWrapWithError<List<T>, String>()
 
-    val defEntity = FieldWrap<T?, String>()
+    val defEntity = FieldWrapWithError<T?, String>()
 
     val error = ErrorWrap<String?>()
 

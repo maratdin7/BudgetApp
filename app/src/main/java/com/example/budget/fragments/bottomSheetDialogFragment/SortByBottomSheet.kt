@@ -4,14 +4,13 @@ import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.HeaderItemFilterViewModel
+import com.example.budget.viewModel.wrap.FieldWrapWithError
 
-class SortByBottomSheet(viewModel: HeaderItemFilterViewModel) :
-    AbstractRadioGroupBottomSheet(viewModel) {
+class SortByBottomSheet(private val sortBy: FieldWrapWithError<Direction?, String>) :
+    AbstractRadioGroupBottomSheet() {
 
     override fun DialogBuilder.createFilter(relativeLayout: RelativeLayout, title: TextView) {
         val dirTypes = Direction.values()
-        val sortBy = viewModel.sortBy
         val checkedId: Int = findCheckedId(sortBy.data.value, dirTypes)
 
         val radioGroup: RadioGroup = radioGroup(dirTypes.map { it.dir }, checkedId, title)
