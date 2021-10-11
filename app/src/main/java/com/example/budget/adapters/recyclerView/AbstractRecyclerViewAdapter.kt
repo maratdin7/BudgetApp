@@ -40,7 +40,6 @@ abstract class AbstractRecyclerViewAdapter :
         with(entities) {
             val prevSize = this.size
             addAll(data)
-            submitList(this)
             notifyItemRangeInserted(prevSize, data.size - 1)
         }
     }
@@ -56,6 +55,8 @@ abstract class AbstractRecyclerViewAdapter :
         entities.clear()
         notifyDataSetChanged()
     }
+
+    fun submitEntities() = submitList(entities)
 }
 
 abstract class AbstractNetRecyclerViewAdapter<T> : AbstractRecyclerViewAdapter() {

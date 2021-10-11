@@ -23,7 +23,7 @@ import java.util.*
 typealias PairX<T, K> = androidx.core.util.Pair<T, K>
 
 class ExpenseHistoryFilterableRecyclerViewAdapter(
-    val expenseHistoryViewModel: ExpenseHistoryViewModel,
+    expenseHistoryViewModel: ExpenseHistoryViewModel,
     private val parentFragmentManager: FragmentManager,
 ) : ExpenseHistoryRecyclerViewAdapter<ExpenseEntity>(expenseHistoryViewModel, FormatterRepository.dayWithFullMonth) {
 
@@ -96,8 +96,7 @@ class ExpenseHistoryFilterableRecyclerViewAdapter(
 open class ExpenseHistoryRecyclerViewAdapter<T : IExpenseEntity>(
     val viewModel: IRecyclerViewModel<T>,
     val dateFormatter: SimpleDateFormat,
-) :
-    AbstractHistoryRecyclerViewAdapter<T>() {
+) : AbstractHistoryRecyclerViewAdapter<T>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_HISTORY_ITEM -> ExpenseItemViewHolder(parent)
@@ -170,8 +169,6 @@ abstract class AbstractHistoryRecyclerViewAdapter<T> : AbstractNetRecyclerViewAd
         }
         return true
     }
-
-
 }
 
 data class ExpenseHistoryItem(

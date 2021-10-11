@@ -11,30 +11,31 @@ class LocalExchangeHistoryFragment : AbstractHistoryFragment() {
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val adapter = LocalExpenseHistoryRecyclerViewAdapter()
-        val localExchanges = tmp()
+//        val localExchanges = tmp()
 //        adapter.updateList(adapter.toDataItem(localExchanges))
+
         return adapter
     }
 
-    private fun tmp(): MutableList<LocalExchangeEntity> {
-        val localExchangeEntity = mutableListOf<LocalExchangeEntity>()
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
-        var startDate = formatter.parse("2021-12-01")
-        for (i in 0..30) {
-
-            when (i) {
-                10 -> startDate = formatter.parse("2021-11-22")
-                20 -> startDate = formatter.parse("2021-10-21")
-
-            }
-            localExchangeEntity.add(
-                LocalExchangeEntity(
-                    price = i.toDouble(),
-                    date = startDate)
-            )
-        }
-        return localExchangeEntity
-    }
+//    private fun tmp(): MutableList<LocalExchangeEntity> {
+//        val localExchangeEntity = mutableListOf<LocalExchangeEntity>()
+//        val formatter = SimpleDateFormat("yyyy-MM-dd")
+//        var startDate = formatter.parse("2021-12-01")
+//        for (i in 0..30) {
+//
+//            when (i) {
+//                10 -> startDate = formatter.parse("2021-11-22")
+//                20 -> startDate = formatter.parse("2021-10-21")
+//
+//            }
+//            localExchangeEntity.add(
+//                LocalExchangeEntity(
+//                    price = i.toDouble(),
+//                    date = startDate)
+//            )
+//        }
+//        return localExchangeEntity
+//    }
 }
 
 data class LocalExchangeEntity(

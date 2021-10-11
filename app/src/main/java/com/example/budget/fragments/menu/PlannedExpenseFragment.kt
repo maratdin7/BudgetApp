@@ -63,7 +63,9 @@ class PlannedExpenseFragment : AbstractMenuFragment() {
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(PlannedExpenseHistoryViewModel::class.java)
         val formatter = FormatterRepository.onlyDayFormatter(getString(R.string.plannedExpenseDatePost))
-        val adapter = ExpenseHistoryRecyclerViewAdapter(viewModel, formatter)
+        val adapter = ExpenseHistoryRecyclerViewAdapter(viewModel, formatter).apply {
+            submitEntities()
+        }
         return adapter
     }
 }

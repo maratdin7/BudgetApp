@@ -11,9 +11,9 @@ class ExpenseHistoryFragment : AbstractHistoryFragment() {
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
         val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(ExpenseHistoryViewModel::class.java)
-        val adapter = ExpenseHistoryFilterableRecyclerViewAdapter(viewModel, parentFragmentManager)
-        adapter.submitList(adapter.entities)
-//        adapter.updateList(adapter.toDataItem(expenses, true))
+        val adapter = ExpenseHistoryFilterableRecyclerViewAdapter(viewModel, parentFragmentManager).apply {
+            submitEntities()
+        }
         return adapter
     }
 }
