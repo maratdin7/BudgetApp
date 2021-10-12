@@ -1,13 +1,10 @@
 package com.example.budget.adapters.recyclerView
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.budget.repository.PersistentRepository
-import com.example.budget.repository.PersistentRepository.defGroupEntity
 
 abstract class AbstractRecyclerViewAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(HistoryDiffCallback()) {
@@ -57,45 +54,6 @@ abstract class AbstractRecyclerViewAdapter :
     }
 
     fun submitEntities() = submitList(entities)
-}
-
-abstract class AbstractNetRecyclerViewAdapter<T> : AbstractRecyclerViewAdapter() {
-
-    protected var page = 0
-    protected var downloadNextPageOnId = -1
-
-    fun downloadNewPage(position: Int) {
-        if (position == downloadNextPageOnId)
-            getEntities()
-    }
-
-    protected abstract fun getEntities()
-
-    override fun clearList() {
-        super.clearList()
-        page = 0
-    }
-
-    override fun updateList(data: List<DataItem.Item>) {
-        super.updateList(data)
-        page++
-    }
-
-    protected open fun onSuccess(data: List<T>?, toItem: (T) -> DataItem.Item) {
-        downloadNextPageOnId = if (data.isNullOrEmpty()) -1
-        else {
-            updateList(data.map { i -> toItem(i) })
-            Log.d("expenses", "Success")
-            entities.size - 1
-        }
-    }
-
-//    init {
-//        defGroupEntity.observeForever {
-//            clearList()
-//            getEntities()
-//        }
-//    }
 }
 
 class HistoryDiffCallback : DiffUtil.ItemCallback<DataItem>() {

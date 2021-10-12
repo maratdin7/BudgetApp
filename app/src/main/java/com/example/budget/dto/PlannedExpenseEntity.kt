@@ -1,7 +1,6 @@
 package com.example.budget.dto
 
 import com.example.budget.repository.FormatterRepository.onlyDayFormatter
-import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class PlannedExpenseEntity(

@@ -2,8 +2,7 @@ package com.example.budget.fragments.history
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.budget.adapters.recyclerView.withFilters.ExpenseHistoryFilterableRecyclerViewAdapter
-import com.example.budget.adapters.recyclerView.withFilters.ExpenseHistoryRecyclerViewAdapter
+import com.example.budget.adapters.recyclerView.history.withFilters.ExpenseHistoryFilterableRecyclerViewAdapter
 import com.example.budget.viewModel.ExpenseHistoryViewModel
 import com.example.budget.viewModel.ViewModelProviderFactory
 

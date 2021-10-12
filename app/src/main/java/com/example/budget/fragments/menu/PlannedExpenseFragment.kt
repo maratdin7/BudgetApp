@@ -9,17 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
-import com.example.budget.adapters.recyclerView.withFilters.ExpenseHistoryFilterableRecyclerViewAdapter
-import com.example.budget.adapters.recyclerView.withFilters.ExpenseHistoryRecyclerViewAdapter
+import com.example.budget.adapters.recyclerView.history.ExpenseHistoryRecyclerViewAdapter
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.databinding.PanelFullExpenseBinding
 import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.ExpenseHistoryViewModel
 import com.example.budget.viewModel.PlannedExpenseHistoryViewModel
 import com.example.budget.viewModel.ViewModelProviderFactory
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class PlannedExpenseFragment : AbstractMenuFragment() {

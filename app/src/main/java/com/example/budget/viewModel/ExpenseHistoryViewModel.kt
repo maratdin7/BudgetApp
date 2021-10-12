@@ -28,10 +28,6 @@ class ExpenseHistoryViewModel(
 class PlannedExpenseHistoryViewModel : MainViewModel(), IRecyclerViewModel<PlannedExpenseEntity> {
     private val repository = PlannedExpenseRepository
 
-    fun getPlannedExpenses(groupId: Int, callback: (Event<List<PlannedExpenseEntity>?>) -> Unit) {
-        requestWithCallback({ repository.getPlannedExpenses(groupId) }) { callback(it) }
-    }
-
     override fun getEntities(groupId: Int, page: Int, callback: (Event<List<PlannedExpenseEntity>?>) -> Unit) {
         requestWithCallback({repository.getPlannedExpenses(groupId)}) { callback(it)}
     }

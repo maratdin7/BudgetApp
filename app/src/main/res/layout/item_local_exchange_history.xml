@@ -1,75 +1,105 @@
-<com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="2dp"
-        app:cardElevation="1dp"
->
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="localExchangeEntity" type="com.example.budget.dto.LocalExchangeEntity"/>
+        <variable name="dateFormatter" type="java.text.SimpleDateFormat"/>
+        <variable name="priceFormatter" type="java.text.NumberFormat"/>
+    </data>
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
     >
 
         <TextView
-                android:id="@+id/senderField"
-                android:maxWidth="100dp"
-                android:layout_width="wrap_content"
+                android:id="@+id/dateText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Senderssssssssssssssq"
-                android:textColor="?colorPrimary"
+                android:text="@{ dateFormatter.format(localExchangeEntity.date)}"
+                android:visibility="@{ dateFormatter != null ? View.VISIBLE : View.GONE }"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="?colorPrimaryDark"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:textAppearance="?attr/textAppearanceHeadline6"
         />
 
-        <ImageView
-                android:id="@+id/arrow"
-                android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right"
-                android:layout_alignBottom="@id/senderField"
-                android:layout_toEndOf="@id/senderField"
-                app:tint="@color/dark_gray"
-                android:contentDescription="@string/sender_to_receiver_arrow"
-        />
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="2dp"
+                android:layout_below="@id/dateText"
+                app:cardElevation="1dp"
+        >
 
-        <TextView
-                android:id="@+id/priceField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="123 ₽"
-                android:textColor="?colorPrimary"
-                android:layout_alignBottom="@id/senderField"
-                android:layout_alignParentEnd="true"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-        />
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp"
+            >
 
-        <TextView
-                android:id="@+id/receiverField"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="Receiverqqq"
-                android:ellipsize="end"
-                android:maxLength="100"
-                android:textColor="?colorPrimary"
-                android:layout_alignBottom="@id/senderField"
-                android:layout_toEndOf="@id/arrow"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:singleLine="true"/>
+                <TextView
+                        android:id="@+id/senderField"
+                        android:maxWidth="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{localExchangeEntity.refCashAccountEntitySend.name, default=`sender`}"
+                        android:textColor="?colorPrimary"
+                        android:layout_alignParentTop="true"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                />
 
-        <TextView
-                android:id="@+id/commentField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_below="@id/senderField"
-                android:text="Comment ddgdfgsdfg\ngdfgdfs"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
-        />
+                <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        android:layout_alignBottom="@id/senderField"
+                        android:layout_toEndOf="@id/senderField"
+                        app:tint="@color/dark_gray"
+                        android:contentDescription="@string/sender_to_receiver_arrow"
+                />
 
+                <TextView
+                        android:id="@+id/priceField"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{priceFormatter.format(localExchangeEntity.sent), default=`price`}"
+                        android:textColor="?colorPrimary"
+                        android:layout_alignBottom="@id/senderField"
+                        android:layout_alignParentEnd="true"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                />
+
+                <TextView
+                        android:id="@+id/receiverField"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{localExchangeEntity.refCashAccountEntityReceive.name, default=`receiver`}"
+                        android:ellipsize="end"
+                        android:maxLength="100"
+                        android:textColor="?colorPrimary"
+                        android:layout_alignBottom="@id/senderField"
+                        android:layout_toEndOf="@id/arrow"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:singleLine="true"/>
+
+                <TextView
+                        android:id="@+id/commentField"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_below="@id/senderField"
+                        android:text="@{localExchangeEntity.comment, default=`Comment`}"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary"
+                />
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
-</com.google.android.material.card.MaterialCardView>
+</layout>

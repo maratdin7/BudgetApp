@@ -1,6 +1,5 @@
 package com.example.budget.viewModel.expense
 
-import com.example.budget.client.NetworkService
 import com.example.budget.dto.CashAccountEntity
 import com.example.budget.dto.CategoryEntity
 import com.example.budget.dto.LocalExchangeEntity
@@ -94,7 +93,7 @@ abstract class AbstractExpenseViewModel<T>(
 
 class LocalExchangeViewModel(
     val cashAccountViewModel: CashAccountViewModel,
-    override val repository: LocalExchangeRepository = LocalExchangeRepository(NetworkService.create("localExchange/")),
+    override val repository: LocalExchangeRepository = LocalExchangeRepository,
 ) : AbstractDatePriceViewModel<LocalExchangeEntity>(repository) {
 
     var senderField = FieldWrapWithError<CashAccountEntity?, String>()

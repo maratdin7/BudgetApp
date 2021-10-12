@@ -1,18 +1,34 @@
 package com.example.budget.adapters.recyclerView
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.budget.adapters.recyclerView.history.AbstractHistoryRecyclerViewAdapter
+import com.example.budget.adapters.recyclerView.history.withFilters.ItemWithDate
 import com.example.budget.databinding.ItemLocalExchangeHistoryBinding
+import com.example.budget.dto.LocalExchangeEntity
+import com.example.budget.repository.FormatterRepository
+import com.example.budget.repository.PersistentRepository
+import com.example.budget.viewModel.Event
+import com.example.budget.viewModel.LocalExchangeHistoryViewModel
 
-class LocalExpenseHistoryRecyclerViewAdapter  :
-    AbstractRecyclerViewAdapter() {
+class LocalExpenseHistoryRecyclerViewAdapter(localExchangeHistoryViewModel: LocalExchangeHistoryViewModel) :
+    AbstractHistoryRecyclerViewAdapter<LocalExchangeEntity>(localExchangeHistoryViewModel) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is LocalExchangeItemViewHolder -> {
-                val localExchangeHistoryItem = getItem(position) as LocalExchangeHistoryItem
-                holder.bind(localExchangeHistoryItem)
+                val historyItem = getItem(position) as LocalExchangeHistoryItem
+                holder.binding.apply {
+                    localExchangeEntity = historyItem.localExchangeEntity
+                    priceFormatter = FormatterRepository.priceFormatter(1)
+
+                    dateFormatter =
+                        if (isExpenseWithNewDate(position, historyItem))
+                            FormatterRepository.dayWithFullMonth
+                        else null
+                }
             }
         }
     }
@@ -25,26 +41,32 @@ class LocalExpenseHistoryRecyclerViewAdapter  :
     }
 
     class LocalExchangeItemViewHolder(
-        parent:ViewGroup,
+        parent: ViewGroup,
         val binding: ItemLocalExchangeHistoryBinding =
-            ItemLocalExchangeHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(localExchangeHistoryItem: LocalExchangeHistoryItem) =
-            binding.apply {
-                with(localExchangeHistoryItem) {
-                    senderField.text = senderCashAccount
-                    receiverField.text = receiverCashAccount
-                    priceField.text = "$price ₽"
-                    commentField.text = comment
-                }
+            ItemLocalExchangeHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    ) : RecyclerView.ViewHolder(binding.root)
+
+    override fun entityToItem(entity: LocalExchangeEntity): DataItem.Item =
+        LocalExchangeHistoryItem(entity)
+
+    override fun onEntitiesLoaded(event: Event<List<LocalExchangeEntity>?>) {
+        when (event) {
+            is Event.Success -> {
+                onSuccess(event.data)
+                Log.d("localExchange", "Success")
             }
+            is Event.Error -> Log.d("localExchange", "Error")
+            Event.Loading -> {}
+        }
+    }
+
+    init {
+        PersistentRepository.defGroupEntity.observeForever {
+            clearList()
+            getEntities()
+        }
     }
 }
 
-data class LocalExchangeHistoryItem(
-    override val id: Int,
-    val senderCashAccount: String = "SenderCashAccount",
-    val receiverCashAccount: String = "ReceiverCashAccount",
-    val price: Double,
-    val comment: String = "qqwweee\ndfsfds",
-    ) : DataItem.Item(id)
+data class LocalExchangeHistoryItem(val localExchangeEntity: LocalExchangeEntity) :
+    ItemWithDate(localExchangeEntity.id + 1, localExchangeEntity.date)

@@ -16,7 +16,7 @@ interface LocalExchangeApi {
         @Query("comment") comment: String? = null,
     ): Response<LocalExchangeEntity>
 
-    @GET("/all")
+    @GET("all")
     suspend fun getAllLocalExchanges(
         @Query("groupId") groupId: Int,
     ): Response<List<LocalExchangeEntity>>

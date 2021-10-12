@@ -1,4 +1,4 @@
-package com.example.budget.adapters.recyclerView.withFilters
+package com.example.budget.adapters.recyclerView.history.withFilters
 
 import androidx.fragment.app.FragmentManager
 import com.example.budget.R

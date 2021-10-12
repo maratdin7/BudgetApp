@@ -3,13 +3,15 @@ package com.example.budget.dto
 import java.util.*
 
 data class LocalExchangeEntity(
-    val id: Int = 0,
+    override var id: Int = 0,
     val senderId: Int,
     val receiverId: Int,
     val sent: Double,
-    val date: Date,
+    override val date: Date,
     val comment: String?,
-    ) {
+    var refCashAccountEntitySend: CashAccountEntity? = null,
+    var refCashAccountEntityReceive: CashAccountEntity? = null,
+    ): IDateEntity {
     override fun toString(): String =
         "Entity of type: ${javaClass.name} ( " +
                 "id = $id " +
