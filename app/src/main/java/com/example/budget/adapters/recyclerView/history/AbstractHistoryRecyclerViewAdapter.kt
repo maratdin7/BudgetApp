@@ -3,7 +3,7 @@ package com.example.budget.adapters.recyclerView.history
 import com.example.budget.adapters.recyclerView.AbstractNetRecyclerViewAdapter
 import com.example.budget.adapters.recyclerView.history.withFilters.ItemWithDate
 import com.example.budget.dto.IDateEntity
-import com.example.budget.viewModel.IRecyclerViewModel
+import com.example.budget.viewModel.recyclerView.IRecyclerViewModel
 
 abstract class AbstractHistoryRecyclerViewAdapter<T : IDateEntity>(viewModel: IRecyclerViewModel<T>) :
     AbstractNetRecyclerViewAdapter<T>(viewModel) {

@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.budget.dto.IEntity
+
+
 
 abstract class AbstractRecyclerViewAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(HistoryDiffCallback()) {
@@ -73,3 +76,5 @@ sealed class DataItem {
     class Header(override val id: Int) : DataItem()
     abstract class Item(override val id: Int) : DataItem()
 }
+
+class EntityItem(val entity: IEntity) : DataItem.Item(entity.id)

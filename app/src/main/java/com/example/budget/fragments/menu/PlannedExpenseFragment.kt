@@ -14,7 +14,7 @@ import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.databinding.PanelFullExpenseBinding
 import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.PlannedExpenseHistoryViewModel
+import com.example.budget.viewModel.recyclerView.PlannedExpenseHistoryViewModel
 import com.example.budget.viewModel.ViewModelProviderFactory
 
 

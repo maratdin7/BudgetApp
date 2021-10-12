@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.adapters.recyclerView.DataItem
-import com.example.budget.adapters.recyclerView.history.AbstractHistoryRecyclerViewAdapter
 import com.example.budget.adapters.recyclerView.history.withFilters.ExpenseHistoryItem
 import com.example.budget.databinding.ItemExpenseHistoryBinding
 import com.example.budget.dto.IExpenseEntity
 import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.PersistentRepository
 import com.example.budget.viewModel.Event
-import com.example.budget.viewModel.IRecyclerViewModel
+import com.example.budget.viewModel.recyclerView.IRecyclerViewModel
 import java.text.SimpleDateFormat
 
 open class ExpenseHistoryRecyclerViewAdapter<T : IExpenseEntity>(

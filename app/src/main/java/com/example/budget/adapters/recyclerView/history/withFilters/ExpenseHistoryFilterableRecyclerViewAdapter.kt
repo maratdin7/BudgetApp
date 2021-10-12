@@ -10,7 +10,7 @@ import com.example.budget.databinding.HeaderExpenseFilterBinding
 import com.example.budget.dto.ExpenseEntity
 import com.example.budget.dto.IExpenseEntity
 import com.example.budget.repository.FormatterRepository
-import com.example.budget.viewModel.ExpenseHistoryViewModel
+import com.example.budget.viewModel.recyclerView.ExpenseHistoryViewModel
 import com.example.budget.viewModel.wrap.FieldWrapWithError
 import java.util.*
 
@@ -21,7 +21,7 @@ class ExpenseHistoryFilterableRecyclerViewAdapter(
     private val parentFragmentManager: FragmentManager,
 ) : ExpenseHistoryRecyclerViewAdapter<ExpenseEntity>(expenseHistoryViewModel, FormatterRepository.dayWithFullMonth) {
 
-    private val expenseFiltersViewModel = expenseHistoryViewModel.expenseFiltersViewModel
+    private val expenseFiltersViewModel = expenseHistoryViewModel.filtersViewModel
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         downloadNewPage(position)

@@ -5,7 +5,6 @@ import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.example.budget.repository.view.DialogBuilder
-import com.example.budget.viewModel.ExpenseFiltersViewModel
 
 abstract class AbstractRadioGroupBottomSheet :
     AbstractBottomSheet() {

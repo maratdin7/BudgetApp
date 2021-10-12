@@ -11,7 +11,7 @@ import com.example.budget.dto.LocalExchangeEntity
 import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.PersistentRepository
 import com.example.budget.viewModel.Event
-import com.example.budget.viewModel.LocalExchangeHistoryViewModel
+import com.example.budget.viewModel.recyclerView.LocalExchangeHistoryViewModel
 
 class LocalExpenseHistoryRecyclerViewAdapter(localExchangeHistoryViewModel: LocalExchangeHistoryViewModel) :
     AbstractHistoryRecyclerViewAdapter<LocalExchangeEntity>(localExchangeHistoryViewModel) {

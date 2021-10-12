@@ -1,7 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.example.budget.fragments.bottomSheetDialogFragment.Direction"/>
-        <variable name="viewModel" type="com.example.budget.viewModel.ExpenseFiltersViewModel"/>
+        <variable name="viewModel" type="com.example.budget.viewModel.recyclerView.FiltersViewModel"/>
 
     </data>
     <com.google.android.material.chip.ChipGroup

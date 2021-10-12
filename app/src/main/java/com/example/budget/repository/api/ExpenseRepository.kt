@@ -4,7 +4,7 @@ import com.example.budget.client.NetworkService
 import com.example.budget.client.api.ExpenseApi
 import com.example.budget.dto.ExpenseEntity
 import com.example.budget.repository.FormatterRepository.sqlDateFormatter
-import com.example.budget.viewModel.Filters
+import com.example.budget.viewModel.recyclerView.Filters
 import retrofit2.Response
 import java.util.*
 

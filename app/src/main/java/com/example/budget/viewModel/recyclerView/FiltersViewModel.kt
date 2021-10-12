@@ -1,4 +1,4 @@
-package com.example.budget.viewModel
+package com.example.budget.viewModel.recyclerView
 
 import androidx.lifecycle.ViewModel
 import com.example.budget.adapters.recyclerView.OperationType
@@ -8,7 +8,7 @@ import com.example.budget.viewModel.wrap.FieldWrapWithError
 import com.example.budget.viewModel.wrap.FieldWrap
 import java.util.*
 
-class ExpenseFiltersViewModel : ViewModel() {
+class FiltersViewModel : ViewModel() {
     val operationType: FieldWrap<OperationType?> = FieldWrapWithError()
 
     val sortBy: FieldWrap<Direction?> = FieldWrapWithError()

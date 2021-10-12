@@ -2,7 +2,7 @@ package com.example.budget.adapters.recyclerView
 
 import com.example.budget.repository.PersistentRepository
 import com.example.budget.viewModel.Event
-import com.example.budget.viewModel.IRecyclerViewModel
+import com.example.budget.viewModel.recyclerView.IRecyclerViewModel
 
 abstract class AbstractNetRecyclerViewAdapter<T>(open val viewModel: IRecyclerViewModel<T>) :
     AbstractRecyclerViewAdapter() {
