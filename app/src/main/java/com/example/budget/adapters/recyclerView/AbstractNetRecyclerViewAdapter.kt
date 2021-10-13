@@ -36,10 +36,11 @@ abstract class AbstractNetRecyclerViewAdapter<T : IEntity>(open val viewModel: I
     }
 
     protected open fun onSuccess(data: List<T>?) {
-        downloadNextPageOnId = if (data.isNullOrEmpty()) -1
-        else {
+        var d = -1
+        data?.let {
             updateList(data.map(::entityToItem))
-            entities.size - 1
+            if (data.isNotEmpty()) d = entities.size - 1
         }
+        downloadNextPageOnId = d
     }
 }

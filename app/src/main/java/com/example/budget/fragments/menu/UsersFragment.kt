@@ -1,7 +1,6 @@
 package com.example.budget.fragments.menu
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
-import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.adapters.recyclerView.UserRecyclerViewAdapter
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.repository.PersistentRepository

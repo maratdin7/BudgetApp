@@ -31,16 +31,11 @@ abstract class AbstractRecyclerViewAdapter :
         }
     }
 
-    fun updateList1(l: List<DataItem>) { // remove
-        entities = l.toMutableList()
-        submitList(entities)
-    }
-
     protected open fun updateList(data: List<DataItem.Item>) {
         with(entities) {
             val prevSize = this.size
             addAll(data)
-            notifyItemRangeInserted(prevSize, data.size - 1)
+            notifyItemRangeInserted(prevSize, data.size)
         }
     }
 

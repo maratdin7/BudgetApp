@@ -68,5 +68,3 @@ class LocalExpenseHistoryRecyclerViewAdapter(localExchangeHistoryViewModel: Loca
     }
 }
 
-data class LocalExchangeHistoryItem(val localExchangeEntity: LocalExchangeEntity) :
-    ItemWithDate(localExchangeEntity.id + 1, localExchangeEntity.date)
