@@ -50,7 +50,7 @@ class PlannedExpenseFragment : AbstractMenuFragment() {
 
         val builder = createDialogBuilder(requireContext(),
             "Создание запланированной траты",
-            neutralButtonEnable = false)
+            )
         builder.setView(layout)
         builder.createDialog()
 

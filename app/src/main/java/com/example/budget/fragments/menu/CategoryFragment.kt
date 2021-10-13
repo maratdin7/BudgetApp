@@ -59,8 +59,7 @@ class CategoryFragment : AbstractMenuFragment() {
         relativeLayout.addView(categoryTypeRadioGroup)
 
         val builder = createDialogBuilder(requireContext(),
-            getString(R.string.createCategory),
-            neutralButtonEnable = false)
+            getString(R.string.createCategory))
         builder.setView(relativeLayout)
 
         val dialog = builder.createDialog()

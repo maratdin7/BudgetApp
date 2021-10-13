@@ -6,6 +6,7 @@ import com.example.budget.R
 import com.example.budget.client.NetworkService
 import com.example.budget.client.api.CashAccountApi
 import com.example.budget.dto.CashAccountEntity
+import com.example.budget.dto.UserEntity
 import retrofit2.Response
 
 object CashAccountRepository: DefEntityRepository<CashAccountEntity>() {
@@ -16,7 +17,7 @@ object CashAccountRepository: DefEntityRepository<CashAccountEntity>() {
         groupId: Int,
         name: String,
         cash: Double,
-    ): Response<Unit> =
+    ): Response<CashAccountEntity> =
         cashAccountApi.createCashAccount(groupId, name, cash)
 
     suspend fun allCashAccounts(

@@ -50,7 +50,7 @@ interface CashAccountApi {
         @Field("groupId") groupId: Int,
         @Field("name") name: String,
         @Field("cash") cash: Double,
-    ): Response<Unit>
+    ): Response<CashAccountEntity>
 
     @GET("all")
     suspend fun allCashAccounts(

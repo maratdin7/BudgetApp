@@ -1,11 +1,14 @@
 package com.example.budget.fragments.menu
 
+import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
 import com.example.budget.adapters.recyclerView.CashAccountRecyclerViewAdapter
 import com.example.budget.databinding.FragmentCashAccountBinding
+import com.example.budget.repository.PersistentRepository.defGroupEntity
 import com.example.budget.repository.view.DialogBuilder
+import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.ViewModelProviderFactory
 import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.recyclerView.ExpenseHistoryViewModel
@@ -38,6 +43,13 @@ class CashAccountFragment : AbstractMenuFragment() {
     }
 
     override fun DialogBuilder.createDialog() {
+        val viewModel = getCashAccountViewModel()
+        var isNotValidCash = true
+        var isNotValidCashAccountName = true
+        val isPositiveButtonEnable = { !(isNotValidCashAccountName || isNotValidCash) }
+        var name: String = ""
+        var cash: Double = 0.0
+
         val relativeLayout = createRelativeLayout(requireContext())
 
         val cashAccountNameInputLayout =
@@ -59,14 +71,16 @@ class CashAccountFragment : AbstractMenuFragment() {
         relativeLayout.addView(cashAccountNameInputLayout)
         relativeLayout.addView(cashInputLayout)
 
-        val builder = createDialogBuilder(requireContext(), "Создайте счёт", neutralButtonEnable = false)
+        val positiveButtonClickListener = {
+            viewModel.createCashAccount(name, cash)
+        }
+
+        val builder =
+            createDialogBuilder(requireContext(), "Создайте счёт", { _, _ -> positiveButtonClickListener() })
         builder.setView(relativeLayout)
 
         val dialog = builder.createDialog()
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        var isNotValidCash = true
-        var isNotValidCashAccountName = true
-        val isPositiveButtonEnable = { !(isNotValidCashAccountName || isNotValidCash) }
 
         val checkError = { str: String?, errorStr: String ->
             Boolean
@@ -78,16 +92,39 @@ class CashAccountFragment : AbstractMenuFragment() {
 
         cashAccountNameInputLayout.addTextChangedListener { p0, _, _, _ ->
             isNotValidCashAccountName = checkError(p0, getString(R.string.error_cash_account))
+            name = p0.toString()
         }
 
         cashInputLayout.addTextChangedListener { p0, _, _, _ ->
-            isNotValidCash = checkError(p0, getString(R.string.error_cash))
+            var p = p0
+            val err = runCatching { p0?.toDouble() ?: throw NullPointerException() }
+            cash = err.getOrElse {
+                p = null
+                0.0
+            }
+            isNotValidCash = checkError(p, getString(R.string.error_cash))
+        }
+
+    }
+
+    @SuppressLint("ShowToast")
+    private fun CashAccountViewModel.createCashAccount(name: String, cash: Double) {
+        val groupId = defGroupEntity.value?.id ?: return
+        this.createCashAccountEntity(groupId, name, cash) {
+            when (it) {
+                is Event.Success -> Unit
+                is Event.Error ->
+                    Toast.makeText(requireContext(), "Error when creating the cash account", Toast.LENGTH_LONG)
+                Event.Loading -> Unit
+            }
         }
     }
 
+    private fun getCashAccountViewModel() =
+        ViewModelProvider(this, ViewModelProviderFactory).get(CashAccountViewModel::class.java)
+
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(CashAccountViewModel::class.java)
-        val adapter = CashAccountRecyclerViewAdapter(requireContext(), viewModel)
+        val adapter = CashAccountRecyclerViewAdapter(requireContext(), getCashAccountViewModel())
         return adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 }

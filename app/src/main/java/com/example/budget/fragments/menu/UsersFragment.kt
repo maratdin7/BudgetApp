@@ -52,8 +52,7 @@ class UsersFragment : AbstractMenuFragment() {
         relativeLayout.addView(userNameInputLayout)
 
         val builder = createDialogBuilder(requireContext(),
-            getString(R.string.add_user_to_group_request),
-            neutralButtonEnable = false)
+            getString(R.string.add_user_to_group_request))
         builder.setView(relativeLayout)
 
         val dialog = builder.createDialog()
