@@ -15,6 +15,9 @@ object UserRepository {
 
     suspend fun getAllUsersInGroup(groupId: Int): Response<List<UserEntity>> =
         userApi.getAllUsersInGroup(groupId)
+
+    suspend fun invitationToJoinGroup(groupId: Int, emailForInvite: String) =
+        userApi.invitationToJoinGroup(groupId, emailForInvite)
 }
 
 object GroupRepository : DefEntityRepository<GroupEntity>() {
@@ -26,10 +29,6 @@ object GroupRepository : DefEntityRepository<GroupEntity>() {
     override fun Context.getPersistentKey(): String = getString(R.string.default_group)
 
     suspend fun createGroup(groupName: String) = groupApi.createGroup(groupName)
-
-    suspend fun invitationToJoinGroup(groupId: Int, emailForInvite: String) {
-        groupApi.invitationToJoinGroup(groupId, emailForInvite)
-    }
 
     suspend fun getAllUserGroups(): Response<List<GroupEntity>> = groupApi.getAllUserGroups()
 }

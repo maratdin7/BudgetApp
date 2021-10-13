@@ -11,15 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.repository.PersistentRepository.loadDefaultCashAccountId
 import com.example.budget.R
 import com.example.budget.databinding.ItemCashAccountBinding
-import com.example.budget.dto.CashAccountEntity
-import com.example.budget.dto.LocalExchangeEntity
 import com.example.budget.repository.FormatterRepository
-import com.example.budget.repository.PersistentRepository.defGroupEntity
-import com.example.budget.repository.api.withDefault.CashAccountRepository
-import com.example.budget.viewModel.Event
-import com.example.budget.viewModel.MainViewModel
 import com.example.budget.viewModel.dropDownField.CashAccountViewModel
-import com.example.budget.viewModel.recyclerView.IRecyclerViewModel
 
 class CashAccountRecyclerViewAdapter(
     private val context: Context,

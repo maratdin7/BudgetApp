@@ -1,10 +1,14 @@
 package com.example.budget.fragments.menu
 
+import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -12,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
 import com.example.budget.adapters.recyclerView.*
 import com.example.budget.databinding.FragmentCashAccountBinding
+import com.example.budget.repository.PersistentRepository
 import com.example.budget.repository.view.DialogBuilder
+import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.ViewModelProviderFactory
 import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.dropDownField.CategoryViewModel
@@ -36,8 +42,14 @@ class CategoryFragment : AbstractMenuFragment() {
         return binding.root
     }
 
+    private fun getCategoryViewModel() =
+        ViewModelProvider(this, ViewModelProviderFactory).get(CategoryViewModel::class.java)
+
     override fun DialogBuilder.createDialog() {
+        val viewModel = getCategoryViewModel()
         val relativeLayout = createRelativeLayout(requireContext())
+        var name = ""
+        var type = OperationType.EXPENSE
 
         val categoryNameInputLayout =
             createTextInputLayoutWithEditText(requireContext(),
@@ -58,8 +70,10 @@ class CategoryFragment : AbstractMenuFragment() {
         relativeLayout.addView(categoryNameInputLayout)
         relativeLayout.addView(categoryTypeRadioGroup)
 
+        val positiveButtonClickListener = { viewModel.createCategory(name, type) }
+
         val builder = createDialogBuilder(requireContext(),
-            getString(R.string.createCategory))
+            getString(R.string.createCategory), { _, _ -> positiveButtonClickListener()})
         builder.setView(relativeLayout)
 
         val dialog = builder.createDialog()
@@ -72,11 +86,30 @@ class CategoryFragment : AbstractMenuFragment() {
                             categoryNameInputLayout.error = categoryNameInputLayout.hint
                             false
                         } else {
-                            categoryNameInputLayout.error = ""
+                            categoryNameInputLayout.error = null
+                            name = p0.toString()
                             true
                         }
                 }
             })
+
+        categoryTypeRadioGroup.setOnCheckedChangeListener { r, checkedId ->
+            val radioButton = r.findViewById<RadioButton>(checkedId)
+            type = OperationType.findByType(radioButton.text.toString())
+        }
+    }
+
+    @SuppressLint("ShowToast")
+    private fun CategoryViewModel.createCategory(name: String, type: OperationType) {
+        val groupEntity = PersistentRepository.defGroupEntity.value ?: return
+        this.createCategoryEntity(groupEntity.id, name, type) {
+            when (it) {
+                is Event.Success -> getListEntities(groupEntity)
+                is Event.Error ->
+                    Toast.makeText(requireContext(), "Error when creating the category", Toast.LENGTH_LONG)
+                Event.Loading -> Unit
+            }
+        }
     }
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {

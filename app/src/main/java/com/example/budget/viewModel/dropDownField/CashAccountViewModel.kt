@@ -27,7 +27,7 @@ class CashAccountViewModel(
         requestWithCallback({ repository.createCashAccount(groupId, name, cash) }) { callback(it) }
     }
 
-    override suspend fun getListEntities(groupId: Int): Response<List<CashAccountEntity>> =
+    override suspend fun loadListEntities(groupId: Int): Response<List<CashAccountEntity>> =
         repository.allCashAccounts(groupId)
 
 }

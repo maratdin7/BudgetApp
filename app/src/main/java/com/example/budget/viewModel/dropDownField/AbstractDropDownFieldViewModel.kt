@@ -1,7 +1,6 @@
 package com.example.budget.viewModel.dropDownField
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.budget.dto.GroupEntity
 import com.example.budget.repository.api.withDefault.DefEntityRepository
@@ -45,7 +44,7 @@ abstract class AbstractDropDownFieldViewModel<T>(
         defEntity.setValue(entity)
     }
 
-    private fun getListEntities(groupEntity: GroupEntity) {
+    fun getListEntities(groupEntity: GroupEntity) {
         getEntities(groupEntity.id, 0, ::onListLoaded)
     }
 
@@ -59,13 +58,13 @@ abstract class AbstractDropDownFieldViewModel<T>(
 
     final override fun getEntities(groupId: Int, page: Int, callback: (Event<List<T>?>) -> Unit) {
         requestWithCallback({
-            getListEntities(groupId)
+            loadListEntities(groupId)
         }) { callback(it) }
     }
 
     fun getListEntities(): LiveData<List<T>> = listEntities.data
 
-    protected abstract suspend fun getListEntities(groupId: Int): Response<List<T>>
+    protected abstract suspend fun loadListEntities(groupId: Int): Response<List<T>>
 
     init {
         PersistentRepository.defGroupEntity.observeForever(::getListEntities)

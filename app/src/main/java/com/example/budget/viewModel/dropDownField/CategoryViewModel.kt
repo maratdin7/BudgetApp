@@ -4,14 +4,25 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.client.NetworkService
+import com.example.budget.dto.CashAccountEntity
 import com.example.budget.dto.CategoryEntity
 import com.example.budget.repository.api.withDefault.CategoryRepository
+import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.wrap.FieldWrapWithError
 import retrofit2.Response
 
 class CategoryViewModel(
-    override val repository: CategoryRepository = CategoryRepository(NetworkService.create("category/")),
+    override val repository: CategoryRepository = CategoryRepository,
 ) : AbstractDropDownFieldViewModel<CategoryEntity>(repository) {
+
+    fun createCategoryEntity(
+        groupId: Int,
+        name: String,
+        operationType: OperationType,
+        callback: (Event<CategoryEntity?>) -> Unit,
+    ) {
+        requestWithCallback({ repository.createCategory(groupId, name, operationType) }) { callback(it) }
+    }
 
     override fun loadFromPersistent(context: Context): CategoryEntity? =
         repository.loadFromPersistent<CategoryEntity>(context)
@@ -19,7 +30,7 @@ class CategoryViewModel(
     override fun saveToPersistent(context: Context, entity: CategoryEntity) =
         repository.saveToPersistent(context, entity)
 
-    override suspend fun getListEntities(groupId: Int): Response<List<CategoryEntity>> =
+    override suspend fun loadListEntities(groupId: Int): Response<List<CategoryEntity>> =
         repository.getAllCategories(groupId)
 
     private val incomeCategories = FieldWrapWithError<List<CategoryEntity>, String>()

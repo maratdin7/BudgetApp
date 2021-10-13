@@ -27,7 +27,7 @@ interface CategoryApi {
         @Field("name") name: String,
         @Query("parentId") parentId: Int?,
         @Field("type") type: OperationType,
-    ): Response<Unit>
+    ): Response<CategoryEntity>
 
     @GET("all")
     suspend fun getAllCategories(

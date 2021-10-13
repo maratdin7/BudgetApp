@@ -1,7 +1,6 @@
 package com.example.budget.fragments.menu
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -21,7 +20,7 @@ import com.example.budget.repository.view.DialogBuilder
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.ViewModelProviderFactory
 import com.example.budget.viewModel.dropDownField.CashAccountViewModel
-import com.example.budget.viewModel.recyclerView.ExpenseHistoryViewModel
+import com.google.android.material.textfield.TextInputLayout
 
 class CashAccountFragment : AbstractMenuFragment() {
 
@@ -47,8 +46,8 @@ class CashAccountFragment : AbstractMenuFragment() {
         var isNotValidCash = true
         var isNotValidCashAccountName = true
         val isPositiveButtonEnable = { !(isNotValidCashAccountName || isNotValidCash) }
-        var name: String = ""
-        var cash: Double = 0.0
+        var name = ""
+        var cash = 0.0
 
         val relativeLayout = createRelativeLayout(requireContext())
 
@@ -71,9 +70,7 @@ class CashAccountFragment : AbstractMenuFragment() {
         relativeLayout.addView(cashAccountNameInputLayout)
         relativeLayout.addView(cashInputLayout)
 
-        val positiveButtonClickListener = {
-            viewModel.createCashAccount(name, cash)
-        }
+        val positiveButtonClickListener = { viewModel.createCashAccount(name, cash) }
 
         val builder =
             createDialogBuilder(requireContext(), "Создайте счёт", { _, _ -> positiveButtonClickListener() })
@@ -82,16 +79,17 @@ class CashAccountFragment : AbstractMenuFragment() {
         val dialog = builder.createDialog()
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
-        val checkError = { str: String?, errorStr: String ->
+        val checkError = { inputLayout: TextInputLayout, str: String?, errorStr: String ->
             Boolean
             val isNotValid = str.isNullOrBlank()
-            cashAccountNameInputLayout.error = errorStr.takeIf { isNotValid }
+            inputLayout.error = errorStr.takeIf { isNotValid }
             positiveButton.isEnabled = isPositiveButtonEnable()
             isNotValid
         }
 
         cashAccountNameInputLayout.addTextChangedListener { p0, _, _, _ ->
-            isNotValidCashAccountName = checkError(p0, getString(R.string.error_cash_account))
+            isNotValidCashAccountName =
+                checkError(cashAccountNameInputLayout, p0, getString(R.string.error_cash_account))
             name = p0.toString()
         }
 
@@ -102,17 +100,17 @@ class CashAccountFragment : AbstractMenuFragment() {
                 p = null
                 0.0
             }
-            isNotValidCash = checkError(p, getString(R.string.error_cash))
+            isNotValidCash = checkError(cashInputLayout, p, getString(R.string.error_cash))
         }
 
     }
 
     @SuppressLint("ShowToast")
     private fun CashAccountViewModel.createCashAccount(name: String, cash: Double) {
-        val groupId = defGroupEntity.value?.id ?: return
-        this.createCashAccountEntity(groupId, name, cash) {
+        val groupEntity = defGroupEntity.value ?: return
+        this.createCashAccountEntity(groupEntity.id, name, cash) {
             when (it) {
-                is Event.Success -> Unit
+                is Event.Success -> getListEntities(groupEntity)
                 is Event.Error ->
                     Toast.makeText(requireContext(), "Error when creating the cash account", Toast.LENGTH_LONG)
                 Event.Loading -> Unit

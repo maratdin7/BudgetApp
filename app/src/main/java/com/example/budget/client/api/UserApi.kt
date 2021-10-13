@@ -10,4 +10,11 @@ interface UserApi {
     @FormUrlEncoded
     @POST("allUsersInGroup")
     suspend fun getAllUsersInGroup(@Field("groupId") groupId: Int): Response<List<UserEntity>>
+
+    @FormUrlEncoded
+    @POST("invitationToJoinGroup")
+    suspend fun invitationToJoinGroup(
+        @Field("groupId") groupId: Int,
+        @Field("emailForInvite") emailForInvite: String,
+    ): Response<UserEntity>
 }

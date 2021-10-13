@@ -2,20 +2,16 @@ package com.example.budget.fragments.expense
 
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.budget.R
 import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.databinding.FragmentExpenseBinding
 import com.example.budget.dto.CashAccountEntity
 import com.example.budget.dto.CategoryEntity
 import com.example.budget.repository.FormatterRepository.fullDateFormatter
-import com.example.budget.repository.view.DropDownField
-import com.example.budget.viewModel.MainViewModel
 import com.example.budget.viewModel.ViewModelProviderFactory
 import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.dropDownField.CategoryViewModel
 import com.example.budget.viewModel.expense.AbstractExpenseViewModel
-import kotlinx.coroutines.cancel
 import java.text.SimpleDateFormat
 import java.util.*
 
