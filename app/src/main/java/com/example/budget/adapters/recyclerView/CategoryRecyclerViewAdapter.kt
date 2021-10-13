@@ -29,7 +29,6 @@ class CategoryRecyclerViewAdapter(private val categoryViewModel: CategoryViewMod
     init {
         categoryViewModel.getListEntities().observeForever { notifyDataSetChanged() }
     }
-
 }
 
 enum class OperationType(val type: String) {

@@ -9,7 +9,7 @@ import com.example.budget.repository.api.GroupRepository
 
 class GroupViewModel : MainViewModel() {
 
-    private val groupRepository: GroupRepository = GroupRepository(NetworkService.create("group/"))
+    private val groupRepository: GroupRepository = GroupRepository
 
     private val _curGroupEntity: MutableLiveData<GroupEntity> = MutableLiveData()
     val curGroupEntity: LiveData<GroupEntity> = _curGroupEntity

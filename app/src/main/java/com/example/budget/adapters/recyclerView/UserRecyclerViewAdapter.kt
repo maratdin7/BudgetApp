@@ -1,44 +1,52 @@
 package com.example.budget.adapters.recyclerView
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.databinding.ItemUserBinding
+import com.example.budget.dto.UserEntity
+import com.example.budget.repository.PersistentRepository.defGroupEntity
+import com.example.budget.viewModel.Event
+import com.example.budget.viewModel.recyclerView.UserViewModel
 
-class UserRecyclerViewAdapter : AbstractRecyclerViewAdapter() {
+class UserRecyclerViewAdapter(private val groupViewModel: UserViewModel) :
+    RecyclerView.Adapter<UserRecyclerViewAdapter.UserItemViewHolder>() {
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is UserItemViewHolder -> {
-                val userItem = getItem(position) as UserItem
-                holder.bind(userItem)
-            }
+    var list: List<UserEntity> = listOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemViewHolder =
+        UserItemViewHolder(parent)
+
+    override fun onBindViewHolder(holder: UserItemViewHolder, position: Int) {
+        holder.binding.apply {
+            userEntity = list[position]
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ITEM_VIEW_TYPE_HISTORY_ITEM -> UserItemViewHolder(parent)
-            else -> throw ClassCastException("Unknown viewType $viewType")
-        }
-    }
+    override fun getItemCount(): Int = list.size
 
     class UserItemViewHolder(
         parent: ViewGroup,
         val binding: ItemUserBinding =
             ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root)
 
-        fun bind(userItem: UserItem) =
-            binding.apply {
-                with(userItem) {
-                    userEmailField.text = email
-                }
-            }
+    init {
+        defGroupEntity.observeForever { groupEntity ->
+            groupViewModel.getEntities(groupEntity.id, 0, this::onLoadedEvent)
+        }
     }
-}
 
-data class UserItem(
-    override val id: Int,
-    val email: String = "email@email.com",
-) : DataItem.Item(id)
+    private fun onLoadedEvent(event: Event<List<UserEntity>?>) {
+        when (event) {
+            is Event.Success -> {
+                list = event.data!!
+                notifyDataSetChanged()
+            }
+            is Event.Error -> Log.d("User", "Error")
+            Event.Loading -> Unit
+        }
+    }
+
+}

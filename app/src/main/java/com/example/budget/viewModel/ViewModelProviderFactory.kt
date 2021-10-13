@@ -8,10 +8,7 @@ import com.example.budget.viewModel.expense.ExpenseViewModel
 import com.example.budget.viewModel.expense.IncomeViewModel
 import com.example.budget.viewModel.expense.LocalExchangeViewModel
 import com.example.budget.viewModel.expense.PlannedExpenseViewModel
-import com.example.budget.viewModel.recyclerView.ExpenseHistoryViewModel
-import com.example.budget.viewModel.recyclerView.FiltersViewModel
-import com.example.budget.viewModel.recyclerView.LocalExchangeHistoryViewModel
-import com.example.budget.viewModel.recyclerView.PlannedExpenseHistoryViewModel
+import com.example.budget.viewModel.recyclerView.*
 
 object ViewModelProviderFactory : ViewModelProvider.Factory {
 
@@ -28,6 +25,7 @@ object ViewModelProviderFactory : ViewModelProvider.Factory {
             vm.checkType<T, LocalExchangeHistoryViewModel>() -> LocalExchangeHistoryViewModel() as T
             vm.checkType<T, CashAccountViewModel>() -> CashAccountViewModel() as T
             vm.checkType<T, CategoryViewModel>() -> CategoryViewModel() as T
+            vm.checkType<T, UserViewModel>() -> UserViewModel() as T
             else -> throw IllegalArgumentException("ViewModel Not Found")
         }
     }

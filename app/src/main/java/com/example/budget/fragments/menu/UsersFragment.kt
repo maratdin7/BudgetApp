@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
-import com.example.budget.adapters.recyclerView.UserItem
 import com.example.budget.adapters.recyclerView.UserRecyclerViewAdapter
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.repository.view.DialogBuilder
+import com.example.budget.viewModel.ViewModelProviderFactory
+import com.example.budget.viewModel.recyclerView.UserViewModel
 
 class UsersFragment : AbstractMenuFragment() {
 
@@ -72,32 +74,9 @@ class UsersFragment : AbstractMenuFragment() {
     }
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        val adapter = UserRecyclerViewAdapter()
-        val users = tmp()
-        adapter.updateList1(
-            users.mapIndexed { i, u ->
-                UserItem(
-                    id = i,
-                    email = u.email,
-                )
-            })
-        return adapter
-    }
-
-    private fun tmp(): MutableList<UserEntity> {
-        val users = mutableListOf<UserEntity>()
-
-        for (i in 0..30) {
-
-            users.add(
-                UserEntity(email = "user+$i@email.com")
-            )
-        }
-        return users
+        val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(UserViewModel::class.java)
+        val adapter = UserRecyclerViewAdapter(viewModel)
+        return adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 }
-
-data class UserEntity(
-    val email: String = "Cash Account",
-)
 

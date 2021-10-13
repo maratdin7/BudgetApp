@@ -14,7 +14,7 @@ open class MainViewModel : ViewModel() {
 //
 //    fun <T> requestWithLiveData(
 //        liveData: MutableLiveData<Event<T>>,
-//        request: suspend () -> ResponseWrapper<T>,
+//        request: suspend () -> Response<T>,
 //    ) {
 //
 //        liveData.postValue(Event.Loading)
@@ -35,7 +35,7 @@ open class MainViewModel : ViewModel() {
 //    }
 
 //    fun <T> requestWithCallback(
-//        request: suspend () -> ResponseWrapper<T>,
+//        request: suspend () -> Response<T>,
 //        response: (Event<T>) -> Unit,
 //    ) {
 //        response(Event.Loading)
@@ -59,7 +59,7 @@ open class MainViewModel : ViewModel() {
 //        }
 //    }
 
-    fun <T> requestWithCallback(
+    protected fun <T> requestWithCallback(
         request: suspend () -> Response<T>,
         response: (Event<T?>) -> Unit,
     ) {

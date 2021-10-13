@@ -1,11 +1,9 @@
 package com.example.budget.client.api
 
 import com.example.budget.adapters.recyclerView.OperationType
-import com.example.budget.client.ResponseWrapper
 import com.example.budget.dto.AuthEntity
 import com.example.budget.dto.CashAccountEntity
 import com.example.budget.dto.CategoryEntity
-import com.example.budget.dto.GroupEntity
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -16,7 +14,7 @@ interface BudgetApi {
     suspend fun signIn(
         @Field("email") email: String,
         @Field("pass") pass: String,
-    ): ResponseWrapper<AuthEntity>
+    ): Response<AuthEntity>
 
 }
 
