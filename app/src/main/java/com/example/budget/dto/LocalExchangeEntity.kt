@@ -11,7 +11,7 @@ data class LocalExchangeEntity(
     val comment: String?,
     var refCashAccountEntitySend: CashAccountEntity? = null,
     var refCashAccountEntityReceive: CashAccountEntity? = null,
-    ): IDateEntity, IEntity {
+    ): IDateEntity {
     override fun toString(): String =
         "Entity of type: ${javaClass.name} ( " +
                 "id = $id " +

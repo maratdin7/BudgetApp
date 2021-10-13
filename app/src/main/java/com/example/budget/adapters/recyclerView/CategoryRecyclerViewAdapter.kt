@@ -4,43 +4,33 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.databinding.ItemCategoryBinding
+import com.example.budget.viewModel.dropDownField.CategoryViewModel
 
-class CategoryRecyclerViewAdapter : AbstractRecyclerViewAdapter() {
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is CategoryItemViewHolder -> {
-                val categoryItem = getItem(position) as CategoryItem
-                holder.bind(categoryItem)
-            }
-        }
-    }
+class CategoryRecyclerViewAdapter(private val categoryViewModel: CategoryViewModel) :
+    RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryItemViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ITEM_VIEW_TYPE_HISTORY_ITEM -> CategoryItemViewHolder(parent)
-            else -> throw ClassCastException("Unknown viewType $viewType")
-        }
+    override fun getItemCount(): Int = categoryViewModel.getListEntities().value?.size ?: 0
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        CategoryItemViewHolder(parent)
+
+    override fun onBindViewHolder(holder: CategoryItemViewHolder, position: Int) {
+        val entities = categoryViewModel.getListEntities().value ?: return
+        val binding = holder.binding
+        binding.categoryEntity = entities[position]
     }
 
     class CategoryItemViewHolder(
         parent: ViewGroup,
         val binding: ItemCategoryBinding =
             ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root)
 
-        fun bind(categoryItem: CategoryItem) =
-            binding.apply {
-                categoryField.text = categoryItem.name
-                operationType.text = categoryItem.operationType.type
-            }
+    init {
+        categoryViewModel.getListEntities().observeForever { notifyDataSetChanged() }
     }
-}
 
-data class CategoryItem(
-    override val id: Int,
-    val name: String = "Category",
-    val operationType: OperationType,
-) : DataItem.Item(id)
+}
 
 enum class OperationType(val type: String) {
     ALL("Все"),

@@ -1,50 +1,56 @@
-<com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="2dp"
-        app:cardElevation="1dp"
-        android:clickable="true"
-        android:focusable="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="cashAccountEntity" type="com.example.budget.dto.CashAccountEntity"/>
+        <variable name="priceFormatter" type="java.text.NumberFormat"/>
+    </data>
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp"
-    >
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="2dp"
+            app:cardElevation="1dp"
+            android:clickable="true"
+            android:focusable="true">
 
-        <TextView
-                android:id="@+id/cashAccountField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CashAccount"
-                android:layout_alignParentTop="true"
-                android:textAppearance="@style/TextAppearance.Custom"
-        />
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+        >
 
-        <TextView
-                android:id="@+id/defaultCashAccount"
-                android:text="@string/defaultCashAccount"
-                android:layout_toEndOf="@+id/cashAccountField"
-                android:layout_alignBottom="@id/cashAccountField"
-                android:textSize="18sp"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-        />
-        <TextView
-                android:id="@+id/priceField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-123 ₽"
-                android:textColor="?colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_alignBottom="@id/cashAccountField"
-                android:textAppearance="@style/TextAppearance.Custom"
-        />
+            <TextView
+                    android:id="@+id/cashAccountField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{cashAccountEntity.name, default = `cashAccount`}"
+                    android:layout_alignParentTop="true"
+                    android:textAppearance="@style/TextAppearance.Custom"
+            />
+
+            <TextView
+                    android:id="@+id/defaultCashAccount"
+                    android:text="@string/defaultCashAccount"
+                    android:layout_toEndOf="@+id/cashAccountField"
+                    android:layout_alignBottom="@id/cashAccountField"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
+            <TextView
+                    android:id="@+id/priceField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{priceFormatter.format(cashAccountEntity.cash), default = `cash`}"
+                    android:textColor="?colorPrimary"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@id/cashAccountField"
+                    android:textAppearance="@style/TextAppearance.Custom"
+            />
 
 
-    </RelativeLayout>
-</com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

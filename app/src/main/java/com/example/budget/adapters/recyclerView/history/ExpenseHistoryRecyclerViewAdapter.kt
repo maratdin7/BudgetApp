@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.adapters.recyclerView.DataItem
+import com.example.budget.adapters.recyclerView.EntityItem
 import com.example.budget.adapters.recyclerView.history.withFilters.ExpenseHistoryItem
 import com.example.budget.databinding.ItemExpenseHistoryBinding
+import com.example.budget.dto.IDateEntity
 import com.example.budget.dto.IExpenseEntity
 import com.example.budget.repository.FormatterRepository
 import com.example.budget.repository.PersistentRepository
@@ -47,9 +49,9 @@ open class ExpenseHistoryRecyclerViewAdapter<T : IExpenseEntity>(
         position: Int,
         holder: ExpenseItemViewHolder,
     ) {
-        val historyItem = getItem(position) as ExpenseHistoryItem
+        val historyItem = getItem(position) as DateEntityItem<T>
         holder.binding.apply {
-            expenseEntity = historyItem.expenseEntity
+            expenseEntity = historyItem.entity
             priceFormatter = FormatterRepository.priceFormatter(1)
 
             dateFormatter =
@@ -71,6 +73,6 @@ open class ExpenseHistoryRecyclerViewAdapter<T : IExpenseEntity>(
             getEntities()
         }
     }
-
-    override fun entityToItem(entity: T): DataItem.Item = ExpenseHistoryItem(entity)
 }
+
+class DateEntityItem<T : IDateEntity>(entity: T) : EntityItem<T>(entity)

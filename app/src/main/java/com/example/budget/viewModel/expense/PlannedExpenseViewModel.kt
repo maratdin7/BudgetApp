@@ -6,7 +6,5 @@ import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.dropDownField.CategoryViewModel
 
 class PlannedExpenseViewModel(
-    override val categoryViewModel: CategoryViewModel,
-    override val cashAccountViewModel: CashAccountViewModel,
     override val repository: PlannedExpenseRepository = PlannedExpenseRepository,
-) : AbstractExpenseViewModel<PlannedExpenseEntity>(categoryViewModel, cashAccountViewModel, repository)
+) : AbstractExpenseViewModel<PlannedExpenseEntity>(repository)

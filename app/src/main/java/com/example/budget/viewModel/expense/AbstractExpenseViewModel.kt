@@ -3,11 +3,9 @@ package com.example.budget.viewModel.expense
 import com.example.budget.dto.CashAccountEntity
 import com.example.budget.dto.CategoryEntity
 import com.example.budget.dto.LocalExchangeEntity
+import com.example.budget.repository.PersistentRepository.defGroupEntity
 import com.example.budget.repository.api.IExpenseRepository
 import com.example.budget.repository.api.LocalExchangeRepository
-import com.example.budget.repository.PersistentRepository.defGroupEntity
-import com.example.budget.viewModel.dropDownField.CashAccountViewModel
-import com.example.budget.viewModel.dropDownField.CategoryViewModel
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.MainViewModel
 import com.example.budget.viewModel.wrap.FieldWrapWithError
@@ -67,8 +65,6 @@ abstract class AbstractDatePriceViewModel<T>(
 }
 
 abstract class AbstractExpenseViewModel<T>(
-    open val categoryViewModel: CategoryViewModel,
-    open val cashAccountViewModel: CashAccountViewModel,
     override val repository: IExpenseRepository<T>,
 ) : AbstractDatePriceViewModel<T>(repository) {
 
@@ -92,7 +88,6 @@ abstract class AbstractExpenseViewModel<T>(
 }
 
 class LocalExchangeViewModel(
-    val cashAccountViewModel: CashAccountViewModel,
     override val repository: LocalExchangeRepository = LocalExchangeRepository,
 ) : AbstractDatePriceViewModel<LocalExchangeEntity>(repository) {
 

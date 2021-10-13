@@ -1,14 +1,15 @@
 package com.example.budget.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CompletableJob
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 open class MainViewModel : ViewModel() {
-
-
 
 //
 //    fun <T> requestWithLiveData(

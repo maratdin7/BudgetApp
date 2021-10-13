@@ -7,13 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
-import com.example.budget.adapters.recyclerView.CashAccountItem
 import com.example.budget.adapters.recyclerView.CashAccountRecyclerViewAdapter
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.repository.view.DialogBuilder
+import com.example.budget.viewModel.ViewModelProviderFactory
+import com.example.budget.viewModel.dropDownField.CashAccountViewModel
+import com.example.budget.viewModel.recyclerView.ExpenseHistoryViewModel
 
 class CashAccountFragment : AbstractMenuFragment() {
 
@@ -83,32 +86,9 @@ class CashAccountFragment : AbstractMenuFragment() {
     }
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        val adapter = CashAccountRecyclerViewAdapter(requireContext())
-        val cashAccounts = tmp()
-        adapter.updateList(
-            cashAccounts.mapIndexed { i, c ->
-                CashAccountItem(id = i,
-                    cashAccountName = c.cashAccountName,
-                    cash = c.cash)
-            })
+        val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(CashAccountViewModel::class.java)
+        val adapter = CashAccountRecyclerViewAdapter(requireContext(), viewModel)
         return adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
-
-    private fun tmp(): MutableList<CashAccountEntity> {
-        val cashAccounts = mutableListOf<CashAccountEntity>()
-
-        for (i in 0..30) {
-
-            cashAccounts.add(
-                CashAccountEntity(cash = i.toDouble())
-            )
-        }
-        return cashAccounts
-    }
 }
-
-data class CashAccountEntity(
-    val cashAccountName: String = "Cash Account",
-    val cash: Double,
-)
 

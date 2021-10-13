@@ -1,12 +1,16 @@
 package com.example.budget.repository.api.withDefault
 
 import android.content.Context
+import android.util.Log
 import com.example.budget.R
+import com.example.budget.client.NetworkService
 import com.example.budget.client.api.CashAccountApi
 import com.example.budget.dto.CashAccountEntity
 import retrofit2.Response
 
-class CashAccountRepository(private val cashAccountApi: CashAccountApi): DefEntityRepository<CashAccountEntity>() {
+object CashAccountRepository: DefEntityRepository<CashAccountEntity>() {
+
+    private val cashAccountApi: CashAccountApi = NetworkService.create("cashAccount/")
 
     suspend fun createCashAccount(
         groupId: Int,

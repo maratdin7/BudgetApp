@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.adapters.recyclerView.DataItem
+import com.example.budget.adapters.recyclerView.EntityItem
 import com.example.budget.adapters.recyclerView.history.ExpenseHistoryRecyclerViewAdapter
 import com.example.budget.databinding.HeaderExpenseFilterBinding
 import com.example.budget.dto.ExpenseEntity
@@ -90,5 +91,7 @@ class ExpenseHistoryFilterableRecyclerViewAdapter(
 data class ExpenseHistoryItem(
     val expenseEntity: IExpenseEntity,
 ) : ItemWithDate(expenseEntity.id + 1, expenseEntity.date)
+
+
 
 abstract class ItemWithDate(override val id: Int, val date: Date) : DataItem.Item(id)

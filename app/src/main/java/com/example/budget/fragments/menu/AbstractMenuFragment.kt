@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.repository.view.DialogBuilder
+import com.example.budget.viewModel.MainViewModel
 
 
 abstract class AbstractMenuFragment : Fragment() {
@@ -20,5 +21,4 @@ abstract class AbstractMenuFragment : Fragment() {
     protected abstract fun DialogBuilder.createDialog()
 
     abstract fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder>
-
 }

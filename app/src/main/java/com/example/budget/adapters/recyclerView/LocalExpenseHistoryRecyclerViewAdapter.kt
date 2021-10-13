@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.adapters.recyclerView.history.AbstractHistoryRecyclerViewAdapter
+import com.example.budget.adapters.recyclerView.history.DateEntityItem
 import com.example.budget.adapters.recyclerView.history.withFilters.ItemWithDate
 import com.example.budget.databinding.ItemLocalExchangeHistoryBinding
 import com.example.budget.dto.LocalExchangeEntity
@@ -19,9 +20,9 @@ class LocalExpenseHistoryRecyclerViewAdapter(localExchangeHistoryViewModel: Loca
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is LocalExchangeItemViewHolder -> {
-                val historyItem = getItem(position) as LocalExchangeHistoryItem
+                val historyItem = getItem(position) as DateEntityItem<LocalExchangeEntity>
                 holder.binding.apply {
-                    localExchangeEntity = historyItem.localExchangeEntity
+                    localExchangeEntity = historyItem.entity
                     priceFormatter = FormatterRepository.priceFormatter(1)
 
                     dateFormatter =
@@ -46,8 +47,7 @@ class LocalExpenseHistoryRecyclerViewAdapter(localExchangeHistoryViewModel: Loca
             ItemLocalExchangeHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false),
     ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun entityToItem(entity: LocalExchangeEntity): DataItem.Item =
-        LocalExchangeHistoryItem(entity)
+    override fun entityToItem(entity: LocalExchangeEntity): DataItem.Item = DateEntityItem(entity)
 
     override fun onEntitiesLoaded(event: Event<List<LocalExchangeEntity>?>) {
         when (event) {

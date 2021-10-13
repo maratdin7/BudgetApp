@@ -2,7 +2,7 @@ package com.example.budget.dto
 
 import java.util.*
 
-interface IExpenseEntity : IDateEntity, IEntity {
+interface IExpenseEntity : IDateEntity {
     override var id: Int
     val categoryId: Int
     val cashAccountId: Int
@@ -13,7 +13,7 @@ interface IExpenseEntity : IDateEntity, IEntity {
     val refCashAccountEntity: CashAccountEntity?
 }
 
-interface IDateEntity {
+interface IDateEntity : IEntity {
     val date: Date
 }
 

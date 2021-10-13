@@ -77,4 +77,4 @@ sealed class DataItem {
     abstract class Item(override val id: Int) : DataItem()
 }
 
-class EntityItem(val entity: IEntity) : DataItem.Item(entity.id)
+open class EntityItem<T : IEntity>(val entity: T) : DataItem.Item(entity.id)

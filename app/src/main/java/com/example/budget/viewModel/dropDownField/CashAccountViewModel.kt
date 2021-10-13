@@ -1,13 +1,14 @@
 package com.example.budget.viewModel.dropDownField
 
 import android.content.Context
-import com.example.budget.client.NetworkService
+import android.util.Log
 import com.example.budget.dto.CashAccountEntity
+import com.example.budget.repository.PersistentRepository
 import com.example.budget.repository.api.withDefault.CashAccountRepository
 import retrofit2.Response
 
 class CashAccountViewModel(
-    override val repository: CashAccountRepository = CashAccountRepository(NetworkService.create("cashAccount/"))
+    override val repository: CashAccountRepository = CashAccountRepository
 ) : AbstractDropDownFieldViewModel<CashAccountEntity>(repository) {
 
     override fun loadFromPersistent(context: Context): CashAccountEntity? =

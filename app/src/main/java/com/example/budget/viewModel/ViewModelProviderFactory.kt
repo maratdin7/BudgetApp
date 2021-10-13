@@ -15,21 +15,19 @@ import com.example.budget.viewModel.recyclerView.PlannedExpenseHistoryViewModel
 
 object ViewModelProviderFactory : ViewModelProvider.Factory {
 
-    private val categoryViewModel = CategoryViewModel()
-    private val cashAccountViewModel = CashAccountViewModel()
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(vm: Class<T>): T {
         return when {
             vm.checkType<T, AuthViewModel>() -> AuthViewModel() as T
-            vm.checkType<T, ExpenseViewModel>() -> ExpenseViewModel(categoryViewModel, cashAccountViewModel) as T
-            vm.checkType<T, IncomeViewModel>() -> IncomeViewModel(categoryViewModel, cashAccountViewModel) as T
-            vm.checkType<T, PlannedExpenseViewModel>() -> PlannedExpenseViewModel(categoryViewModel,
-                cashAccountViewModel) as T
-            vm.checkType<T, LocalExchangeViewModel>() -> LocalExchangeViewModel(cashAccountViewModel) as T
+            vm.checkType<T, ExpenseViewModel>() -> ExpenseViewModel() as T
+            vm.checkType<T, IncomeViewModel>() -> IncomeViewModel() as T
+            vm.checkType<T, PlannedExpenseViewModel>() -> PlannedExpenseViewModel() as T
+            vm.checkType<T, LocalExchangeViewModel>() -> LocalExchangeViewModel() as T
             vm.checkType<T, ExpenseHistoryViewModel>() -> ExpenseHistoryViewModel(FiltersViewModel()) as T
             vm.checkType<T, PlannedExpenseHistoryViewModel>() -> PlannedExpenseHistoryViewModel() as T
             vm.checkType<T, LocalExchangeHistoryViewModel>() -> LocalExchangeHistoryViewModel() as T
+            vm.checkType<T, CashAccountViewModel>() -> CashAccountViewModel() as T
+            vm.checkType<T, CategoryViewModel>() -> CategoryViewModel() as T
             else -> throw IllegalArgumentException("ViewModel Not Found")
         }
     }

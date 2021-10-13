@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.R
 import com.example.budget.adapters.recyclerView.*
 import com.example.budget.databinding.FragmentCashAccountBinding
 import com.example.budget.repository.view.DialogBuilder
+import com.example.budget.viewModel.ViewModelProviderFactory
+import com.example.budget.viewModel.dropDownField.CashAccountViewModel
+import com.example.budget.viewModel.dropDownField.CategoryViewModel
 
 class CategoryFragment : AbstractMenuFragment() {
 
@@ -77,33 +81,8 @@ class CategoryFragment : AbstractMenuFragment() {
     }
 
     override fun adapterSettings(): RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        val adapter = CategoryRecyclerViewAdapter()
-        val users = tmp()
-        adapter.updateList1(
-            users.mapIndexed { i, c ->
-                CategoryItem(
-                    id = i,
-                    name = c.name,
-                    operationType = c.operationType
-                )
-            })
-        return adapter
-    }
-
-    private fun tmp(): MutableList<CategoryEntity> {
-        val categories = mutableListOf<CategoryEntity>()
-
-        for (i in 0..30) {
-            categories.add(
-                CategoryEntity(name = "Category $i", operationType = OperationType.EXPENSE)
-            )
-        }
-        return categories
+        val viewModel = ViewModelProvider(this, ViewModelProviderFactory).get(CategoryViewModel::class.java)
+        val adapter = CategoryRecyclerViewAdapter(viewModel)
+        return adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 }
-
-data class CategoryEntity(
-    val name: String = "Category",
-    val operationType: OperationType,
-
-    )

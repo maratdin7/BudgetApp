@@ -1,39 +1,43 @@
-<com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="2dp"
-        app:cardElevation="1dp"
->
-
-    <RelativeLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="categoryEntity" type="com.example.budget.dto.CategoryEntity"/>
+    </data>
+    <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="2dp"
+            app:cardElevation="1dp"
     >
 
-        <TextView
-                android:id="@+id/categoryField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category 1"
-                android:textColor="?colorPrimary"
-                android:layout_alignParentTop="true"
-                android:textAppearance="@style/TextAppearance.Custom"
-        />
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+        >
 
-        <TextView
-                android:id="@+id/operationType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Расход"
-                android:layout_alignBottom="@id/categoryField"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/dark_gray"
-                android:textAppearance="@style/TextAppearance.Custom"
-                />
+            <TextView
+                    android:id="@+id/categoryField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{categoryEntity.name, default = `Category`}"
+                    android:textColor="?colorPrimary"
+                    android:layout_alignParentTop="true"
+                    android:textAppearance="@style/TextAppearance.Custom"
+            />
 
-    </RelativeLayout>
-</com.google.android.material.card.MaterialCardView>
+            <TextView
+                    android:id="@+id/operationType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{categoryEntity.type.type, default = `Type`}"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="14sp"
+            />
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

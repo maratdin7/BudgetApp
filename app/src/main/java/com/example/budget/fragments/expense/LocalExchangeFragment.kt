@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.budget.R
 import com.example.budget.databinding.FragmentLocalExchangeBinding
 import com.example.budget.dto.LocalExchangeEntity
 import com.example.budget.repository.FormatterRepository
 import com.example.budget.viewModel.ViewModelProviderFactory
+import com.example.budget.viewModel.dropDownField.CashAccountViewModel
 import com.example.budget.viewModel.expense.LocalExchangeViewModel
 import java.text.SimpleDateFormat
 
@@ -30,6 +32,9 @@ class LocalExchangeFragment : AbstractDatePriceFragment<LocalExchangeEntity, Loc
         val localExchangeViewModel =
             ViewModelProvider(this, ViewModelProviderFactory).get(LocalExchangeViewModel::class.java)
 
+        val cashAccountViewModel =
+            ViewModelProvider(this, ViewModelProviderFactory).get(CashAccountViewModel::class.java)
+
         binding.localExchangeViewModel = localExchangeViewModel
         binding.lifecycleOwner = this
 
@@ -43,7 +48,7 @@ class LocalExchangeFragment : AbstractDatePriceFragment<LocalExchangeEntity, Loc
                     senderField
                 ) { it.name }
 
-            val receiverCashAccountField = binding.receiverCashAccountField.dropdownMenu
+                val receiverCashAccountField = binding.receiverCashAccountField.dropdownMenu
                 setDropDownField(
                     vm.getListEntities(),
                     vm,

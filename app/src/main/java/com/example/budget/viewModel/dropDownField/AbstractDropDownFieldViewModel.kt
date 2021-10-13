@@ -1,19 +1,21 @@
 package com.example.budget.viewModel.dropDownField
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.budget.dto.GroupEntity
 import com.example.budget.repository.api.withDefault.DefEntityRepository
 import com.example.budget.repository.PersistentRepository
 import com.example.budget.viewModel.Event
 import com.example.budget.viewModel.MainViewModel
+import com.example.budget.viewModel.recyclerView.IRecyclerViewModel
 import com.example.budget.viewModel.wrap.ErrorWrap
 import com.example.budget.viewModel.wrap.FieldWrapWithError
 import retrofit2.Response
 
 abstract class AbstractDropDownFieldViewModel<T>(
     protected open val repository: DefEntityRepository<T>,
-) : MainViewModel() {
+) : MainViewModel(), IRecyclerViewModel<T> {
 
     protected val listEntities = FieldWrapWithError<List<T>, String>()
 
@@ -44,13 +46,21 @@ abstract class AbstractDropDownFieldViewModel<T>(
     }
 
     private fun getListEntities(groupEntity: GroupEntity) {
-        requestWithCallback({ getListEntities(groupEntity.id) }) {
-            when (it) {
-                is Event.Error -> error.setError(it.message)
-                is Event.Success -> listEntities.setValue(it.data!!)
-                Event.Loading -> Unit
-            }
+        getEntities(groupEntity.id, 0, ::onListLoaded)
+    }
+
+    private fun onListLoaded(event: Event<List<T>?>) = when (event) {
+        is Event.Error -> error.setError(event.message)
+        is Event.Success -> {
+            listEntities.setValue(event.data!!)
         }
+        Event.Loading -> Unit
+    }
+
+    final override fun getEntities(groupId: Int, page: Int, callback: (Event<List<T>?>) -> Unit) {
+        requestWithCallback({
+            getListEntities(groupId)
+        }) { callback(it) }
     }
 
     fun getListEntities(): LiveData<List<T>> = listEntities.data
@@ -58,9 +68,6 @@ abstract class AbstractDropDownFieldViewModel<T>(
     protected abstract suspend fun getListEntities(groupId: Int): Response<List<T>>
 
     init {
-        with(PersistentRepository.defGroupEntity) {
-            value?.let { getListEntities(it) }
-            observeForever { getListEntities(it) }
-        }
+        PersistentRepository.defGroupEntity.observeForever(::getListEntities)
     }
 }
