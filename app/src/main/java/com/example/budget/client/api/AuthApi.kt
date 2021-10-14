@@ -4,10 +4,11 @@ import com.example.budget.adapters.recyclerView.OperationType
 import com.example.budget.dto.AuthEntity
 import com.example.budget.dto.CashAccountEntity
 import com.example.budget.dto.CategoryEntity
+import com.example.budget.dto.UserEntity
 import retrofit2.Response
 import retrofit2.http.*
 
-interface BudgetApi {
+interface AuthApi {
 
     @FormUrlEncoded
     @POST("signIn")
@@ -16,6 +17,28 @@ interface BudgetApi {
         @Field("pass") pass: String,
     ): Response<AuthEntity>
 
+    @FormUrlEncoded
+    @POST("signUp")
+    suspend fun signUp(
+        @Field("email") email: String,
+        @Field("pass") pass: String,
+    ): Response<AuthEntity>
+
+    @FormUrlEncoded
+    @POST("generateAccessToken")
+    suspend fun generateAccessToken(
+        @Field("email") email: String?,
+        @Field("refreshToken") refreshToken: String?,
+    ): Response<AuthEntity>
+
+    @GET("resetPassword")
+    suspend fun resetPassword(@Query("email") email: String): Response<UserEntity>
+
+    @GET("confirmResetPassword")
+    suspend fun confirmResetPassword(
+        @Query("email") email: String,
+        @Query("token") token: Int,
+    ): Response<String>
 }
 
 interface CategoryApi {

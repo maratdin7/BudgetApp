@@ -28,7 +28,7 @@ object NetworkService {
                 .newBuilder()
                 .build()
 
-            val token = PersistentRepository.token
+            val token = PersistentRepository.accessToken
 
             val request = chain
                 .request()

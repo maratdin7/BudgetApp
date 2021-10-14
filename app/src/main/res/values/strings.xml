@@ -53,5 +53,11 @@
     <string name="sender_to_receiver_arrow">sender_to_receiver_arrow</string>
     <string name="search">Поиск</string>
     <string name="plannedExpenseDatePost">день месяца</string>
+    <string name="refreshToken">refreshToken</string>
+    <string name="emailHint">Введите email</string>
+    <string name="passwordField">Введите пароль</string>
+    <string name="signInOrSignUp">Войти или зарегистрироваться</string>
+    <string name="passwordIsToSmall">Пароль слишком короткий</string>
+    <string name="userAlreadyExist">Пользователь с такой почтой уже зарегистрирован</string>
 
 </resources>

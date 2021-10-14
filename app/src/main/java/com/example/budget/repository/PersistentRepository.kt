@@ -12,7 +12,7 @@ import com.google.gson.Gson
 
 object PersistentRepository {
 
-    val token: String = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJhdGRpbjcrMUBnbWFpbC5jb20iLCJpYXQiOjE2MzQxNjY2MTcsImV4cCI6MTYzNDE3MDIxN30.Lj27u2N4SvWizlpvyMEqtRvHUrtasDqiFynrg5crDbP7Vd2Ps0bbfmqlBlceCqZBCATY1EdD6UL5_w6dkMdCXQ"
+    var accessToken: String = ""
 
     fun loadDefaultCashAccountId(context: Context): Int? {
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
@@ -62,6 +62,8 @@ object PersistentRepository {
 
     private val _defGroupEntity: MutableLiveData<GroupEntity> = MutableLiveData()
     val defGroupEntity: LiveData<GroupEntity> = _defGroupEntity
+
+    val isLogin: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var defCategoryEntity: CategoryEntity? = null
 

@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budget.dto.IEntity
 
-
-
 abstract class AbstractRecyclerViewAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(HistoryDiffCallback()) {
 
